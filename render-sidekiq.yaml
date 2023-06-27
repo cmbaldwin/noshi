@@ -10,6 +10,20 @@ services:
     maxmemoryPolicy: allkeys-lfu
     region: oregon
     ipAllowList: []
+  - type: worker
+    name: noshi-sidekiq-worker
+    plan: standard # <-- required to use the worker service type
+    runtime: ruby
+    region: oregon
+    buildCommand: bundle install
+    startCommand: bundle exec sidekiq
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: noshi-sidekiq-redis
+          property: connectionString
+      - fromGroup: noshi
   - type: web
     name: noshi
     runtime: ruby

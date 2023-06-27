@@ -4,8 +4,8 @@ export default class NoshiPreview {
   _noshi_form = document.querySelector(".noshi_form");
   _user_id = document.querySelector("#user_id")?.value;
   _formatRadios = document.querySelectorAll(".format_select");
-  _noshiDesignList = document.getElementById("noshi_design_list")
-  _noshiTypeField = document.querySelector("#noshi_ntype")
+  _noshiDesignList = document.getElementById("noshi_design_list");
+  _noshiTypeField = document.querySelector("#noshi_ntype");
   _fontSizeSelect = document.querySelector(".font_size");
   _ometegakiSelect = document.querySelector(".omotegaki_select");
   _ometegakiBtns = document.querySelectorAll(".omotegaki_btn");
@@ -88,7 +88,8 @@ export default class NoshiPreview {
     });
     // Create and save button
     // this._submitBtn.addEventListener("click", this._submitBtnListener.bind(this));
-    window.addEventListener("resize", this.updatePreview());
+    this._updatePreview = this.updatePreview.bind(this);
+    window.addEventListener("resize", this.onResize.bind(this));
     this.updatePreview();
   }
 
@@ -101,8 +102,14 @@ export default class NoshiPreview {
   //     this._noshi_form.submit();
   // }
 
+  onResize() {
+    this._updatePreview();
+  }
+
   _posBtnListener(e) {
-    const classListStr = Array.from(e.target.closest('span').classList).join("");
+    const classListStr = Array.from(e.target.closest("span").classList).join(
+      ""
+    );
     const isOmotegaki = classListStr.includes("omotegaki");
     const isUp = classListStr.includes("up");
     this._moveEl(isOmotegaki, isUp);
@@ -196,7 +203,7 @@ export default class NoshiPreview {
 
   _setActiveNType(selected) {
     const designNum = Number.parseInt(selected.dataset.noshiId) + 1;
-    const noshiInputField = document.querySelector("#noshi_ntype")
+    const noshiInputField = document.querySelector("#noshi_ntype");
     this._noshiDesignList.querySelectorAll("div.noshi").forEach((a) => {
       a.classList.remove("bg-sky-500");
     });
@@ -220,9 +227,11 @@ export default class NoshiPreview {
         });
         // Show only applicable options, and select one
         if (radio.value.includes("縦")) {
-          this._noshiDesignList.querySelectorAll(".portrait-noshi").forEach((a) => {
-            a.classList.remove("hidden");
-          });
+          this._noshiDesignList
+            .querySelectorAll(".portrait-noshi")
+            .forEach((a) => {
+              a.classList.remove("hidden");
+            });
           if (!prevVal.includes("縦")) {
             selected = this._noshiDesignList.querySelector(".portrait-noshi");
             this._setActiveNType(selected);
@@ -311,7 +320,9 @@ export default class NoshiPreview {
     namesTMInputVal.value = parseInt(this._namesTMarginFull * 100) / 100; // Round to 2 decimal places
   }
   _setNameReferences() {
-    const namesBMInputVal = document.querySelector("#noshi_names_margin_bottom");
+    const namesBMInputVal = document.querySelector(
+      "#noshi_names_margin_bottom"
+    );
     // Set local reference
     this._namesBMarginFull = this._namesBMargin / this._diffMultiplier(); // get from preview to 300dpi
     // Set form values
@@ -331,9 +342,7 @@ export default class NoshiPreview {
     // ImageMagick uses points for font sizing, will need this later for scaling
     // 1pt = 1/72th of 1in, 1px = 1/96th of 1in, https://pixelsconverter.com/pt-to-px
     const nType = parseInt(this._nType) ? parseInt(this._nType) : 1;
-    const bgURL = encodeURI(
-      `noshi/noshi${nType}.jpg`
-    );
+    const bgURL = encodeURI(`noshi/noshi${nType}.jpg`);
     // set width to 100% if landscape, otherwise user fractional width
     const landscapeWidth = this._paperSize.includes("縦")
       ? " mx-auto w-full"
@@ -386,7 +395,12 @@ export default class NoshiPreview {
         : `${this._b5WidthPx}x${this._b5HeightPx}`;
     return `
       <div class="noshi_preview_display_info rounded opacity-25" style="display: block; position: absolute; bottom: 3px; right: 3px; font-size: 9px;">
-        ${this._paperSize.toUpperCase()}(${this._getAspectRatio().replace(" / ", "pt x ")}pt:): ${this._getPrevWidth()}px x ${this._getPrevHeight()}px /${Math.round(this._diffMultiplier() * 100) / 100} -> (${paperPx})
+        ${this._paperSize.toUpperCase()}(${this._getAspectRatio().replace(
+      " / ",
+      "pt x "
+    )}pt:): ${this._getPrevWidth()}px x ${this._getPrevHeight()}px /${
+      Math.round(this._diffMultiplier() * 100) / 100
+    } -> (${paperPx})
       </div>
     `;
   }
@@ -449,14 +463,27 @@ export default class NoshiPreview {
       function touchHandler(event) {
         var touch = event.changedTouches[0];
         var simulatedEvent = document.createEvent("MouseEvent");
-            simulatedEvent.initMouseEvent({
+        simulatedEvent.initMouseEvent(
+          {
             touchstart: "mousedown",
             touchmove: "mousemove",
-            touchend: "mouseup"
-        }[event.type], true, true, window, 1,
-            touch.screenX, touch.screenY,
-            touch.clientX, touch.clientY, false,
-            false, false, false, 0, null);
+            touchend: "mouseup",
+          }[event.type],
+          true,
+          true,
+          window,
+          1,
+          touch.screenX,
+          touch.screenY,
+          touch.clientX,
+          touch.clientY,
+          false,
+          false,
+          false,
+          false,
+          0,
+          null
+        );
         touch.target.dispatchEvent(simulatedEvent);
       }
       document.addEventListener("touchstart", touchHandler, true);
@@ -494,9 +521,7 @@ export default class NoshiPreview {
           // Shadowing for portrait mode
           if (this._paperSize.includes("縦")) {
             ["names_shadow", "omotegaki_shadow"].forEach((els) => {
-              document
-                .querySelectorAll(`.${els}`)
-                .forEach((el) => el.remove());
+              document.querySelectorAll(`.${els}`).forEach((el) => el.remove());
             });
             this._renderShadowing();
           }
@@ -566,7 +591,7 @@ export default class NoshiPreview {
       // Set names top margin after rendering (needs DOM to be rendered)
       this._setNameTMargin();
     }
-    
+
     // Debugging
     //console.log(this);
   }
