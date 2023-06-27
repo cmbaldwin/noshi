@@ -1,0 +1,4 @@
+<h1 class="m-2 p-4 text-lg lg:text-xl text-center"><%= t('noshi_title', occasion: @noshi.omotegaki, names: @noshi.names.reject(&:empty?).join(', ')) %></h1>
+<div class="grid grid-flow-col auto-cols-max items-center content-center justify-center">
+  <%= render @noshi %>
+</div>

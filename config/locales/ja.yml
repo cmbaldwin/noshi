@@ -1,0 +1,41 @@
+ja:
+  sign_in: "ログイン"
+  sign_up: "登録"
+  sign_out: "ログアウト"
+  noshi_list: "熨斗リスト"
+  delete_checked: "チェックした熨斗を削除"
+  download_noshi: "熨斗をダウンロード"
+  download: "ダウンロード"
+  close_modal: "閉じる"
+  confirm_delete_checked: "チェックした熨斗削除してもよろしいですか？"
+  confirm_delete: "この熨斗を削除してもよろしいですか？"
+  check_all: "すべてチェック"
+  format_title: "フォーマット選択"
+  background_select: "水引き"
+  omotegaki_select: "表書き"
+  size_select: "サイズ"
+  name_select: "名前"
+  preview_header: "プレビュー"
+  preview_hint: "表書きと名前の位置はドラッグ操作可能です。"
+  preview_text: "選択してプレビューはここに表示されます。"
+  create: "作成"
+  create_and_save: "作成して保存"
+  noshi_processing: "処理中..."
+  noshi_created: "熨斗が作成中です"
+  noshi_fail: "熨斗が作成できませんでした。%{errors}"
+  noshi_modified: "熨斗が修正中です"
+  noshis_destroyed: "%{count}個の熨斗が削除されました"
+  noshi_destroyed: "熨斗が削除されました"
+  noshi_title: "表書き:[%{occasion}]と名前:[%{names}]の熨斗"
+  about_header: "このアプリについて"
+  about_text:
+    "折形（おりがた）は、贈答などに用いられる紙を折って物を包む日本の礼法のひとつです。<br><br>
+    お年玉袋		室町時代に確立され、上級武家の礼法として600年の長い年月をかけて伝承されてきた包みの作法「折形」。<br>
+    その「折形作法」を現代の暮らしの中で実践できるもののひとつに、「紙幣包み」があります。<br>
+    ご紹介する「のし付き折形紙幣包み」は、祝儀袋や熨斗紙の原点ともいえるもので、半紙や奉書紙はもとより、一般的なA4のコピー紙でも、御礼や御祝、お年玉などのちょっとした贈りものを包める実用的な折形です。<br>
+    豪華絢爛とは対極にある日本の美や日本の心を伝える「のし付き折形紙幣包み」で、あなたの贈る心をより豊かに表現されてみてはいかがでしょうか。<br><br>
+    ※奉書紙で折った「のし付き折形紙幣包み」<br>"
+  languages:
+    en: "英語"
+    ja: "日本語"
+  loading: "読み込み中..."

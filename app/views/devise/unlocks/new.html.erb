@@ -1,0 +1,16 @@
+<h2 class="text-base lg:text-xl">Resend unlock instructions</h2>
+
+<%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="field m-2">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'rounded border border-slate-100 hover:border-sky-300 hover:border-dashed active:border-solid' %>
+  </div>
+
+  <div class="action m-2s">
+    <%= f.submit "Resend unlock instructions", class: 'cursor-pointer px-4 py-2 bg-sky-100 rounded border border-slate-100 hover:border-sky-300 hover:border-dashed active:border-solid' %>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>

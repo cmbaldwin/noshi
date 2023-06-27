@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Noshiio</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    
+    <%= javascript_importmap_tags %>
+    <%= yield(:head) %>
+  </head>
+
+  <body>
+    <!-- create tailwind backgrop to toggle with modals -->
+    <div class="modal-backdrop hidden fixed w-full h-full bg-slate-900 bg-opacity-30 z-20"></div>
+    <nav class="flex items-center justify-between flex-wrap bg-sky-300 p-3 lg:p-6" data-controller="nav">
+      <div class="flex items-center flex-shrink-0 text-white mr-6">
+          <svg width="24px" height="36px" xmlns="http://www.w3.org/2000/svg" viewBox="209.40465087890624 14.300000000000004 81.1906982421875 121.39999999999999" style="background: rgba(255, 255, 255, 0);" preserveAspectRatio="xMidYMid"><defs><filter id="editing-vr"><feFlood flood-color="#58c3ff" flood-opacity="0.7" result="c1"></feFlood><feFlood flood-color="#ffffff" flood-opacity="0.7" result="c3"></feFlood><feComposite operator="in" in="c1" in2="SourceAlpha" result="text-c1"></feComposite><feComposite operator="in" in="c3" in2="SourceAlpha" result="text-c3"></feComposite><feOffset in="text-c1" dx="5" dy="-1" result="text1"></feOffset><feOffset in="text-c3" dx="-5" dy="1" result="text3"></feOffset><feBlend in="SourceGraphic" in2="text1" mode="multiply" result="text4"></feBlend><feBlend in="text4" in2="text3" mode="multiply"></feBlend></filter></defs><g filter="url(#editing-vr)"><g transform="translate(227.44001704454422, 96.1200008392334)"><path d="M7.68 0L0.64 0L8.32-42.24L22.08-42.24L32.06-13.18L37.38-42.24L44.48-42.18L36.67 0L22.02 0L12.80-27.97L7.68 0Z" fill="#ffffff"></path></g></g><style>text {
+            font-size: 64px;
+            font-family: Helvetica Black;
+            dominant-baseline: central;
+            text-anchor: middle;
+          }</style>
+          </svg>
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-sky-200 to-sky-100 font-semibold text-xl tracking-tight">noshi</span>
+      </div>
+      <div class="block lg:hidden">
+        <button class="flex items-center px-3 py-2 border rounded text-sky-200 border-sky-400 hover:border-white" data-action="nav#toggle">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 24.75 24.75" style="background: rgba(255, 255, 255, 0);" xml:space="preserve">
+            <title>t('menu')</title>
+            <g>
+              <path d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2   c-1.104,0-2,0.896-2,2c0,1.104,0.896,2,2,2h20.75c1.104,0,2-0.896,2-2C24.75,11.271,23.855,10.375,22.75,10.375z M22.75,18.875H2   c-1.104,0-2,0.896-2,2s0.896,2,2,2h20.75c1.104,0,2-0.896,2-2S23.855,18.875,22.75,18.875z"/>
+            </g>
+          </svg>
+        </button>
+      </div>
+      <div data-nav-target="mobileNav" class="w-full lg:w-auto block lg:grow lg:flex items-start lg:items-center hidden lg:flex">
+        <div class="grow text-lg lg:text-xl">
+          <% if user_signed_in? %>
+            <%= link_to "🖊", new_noshi_path, class: 'px-2' %>
+            <%= link_to "🖨", root_path, class: 'px-2' %>
+            <%= link_to "🧐", about_path, class: 'px-2' %>
+          <% end %>
+        </div>
+        <div class="text-left lg:text-right flex">
+          <% if user_signed_in? %>
+            <%= button_to(
+                  t(:sign_out),
+                  destroy_user_session_path,
+                  method: :delete,
+                  class: 'inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-2 lg:mt-0'
+                ) %>
+          <% else %>
+            <%= button_to(
+                  t(:sign_in),
+                  new_user_session_path,
+                  class: 'cursor-default hidden inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-2 lg:mt-0',
+                  'disabled' => 'disabled'
+                ) %>
+          <% end %>
+          <%= form_for 'set_locale' do |f| %>
+            <%= f.select :locale, options_for_select(
+                  I18n.available_locales.map { |l| [l.to_s.humanize, l.to_s] },
+                  I18n.locale
+                ), {}, class: 'locale-select ml-2 inline-block text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 mt-2 lg:mt-0'
+              %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+  
+    <main class="container mx-auto px-2 mt-2 lg:mt-4 lg:px-5">
+      <% if notice %>
+        <p class="text-green-700 rounded bg-slate-100 hover:bg-slate-200 border hover:border-dashed text-center m-6 p-4"><%= notice %></p>
+      <% end %>
+      <% if alert %>
+        <p class="text-orange-700 rounded bg-slate-100 hover:bg-slate-200 border hover:border-dashed m-6 p-4"><%= alert %></p>
+      <% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

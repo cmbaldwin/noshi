@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ntype: 1
+  omotegaki: MyString
+  namae: MyString
+  noshi_url: MyString
+  image: MyString
+  paper_size: MyString
+  font_size: 1
+  omotegaki_size: 1
+  omotegaki_margin_top: 9.99
+  names_margin_top: 9.99
+
+two:
+  ntype: 1
+  omotegaki: MyString
+  namae: MyString
+  noshi_url: MyString
+  image: MyString
+  paper_size: MyString
+  font_size: 1
+  omotegaki_size: 1
+  omotegaki_margin_top: 9.99
+  names_margin_top: 9.99

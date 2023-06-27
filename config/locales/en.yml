@@ -1,0 +1,70 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   "true": "foo"
+#
+# To learn more, please read the Rails Internationalization guide
+# available at https://guides.rubyonrails.org/i18n.html.
+
+en:
+  sign_in: "Sign in"
+  sign_up: "Sign up"
+  sign_out: "Logout"
+  noshi_list: "Noshi List"
+  delete_checked: "Delete checked"
+  download_noshi: "Download Noshi"
+  download: "Download"
+  close_modal: "Close"
+  confirm_delete_checked: "Are you sure you want to delete the checked noshis?"
+  confirm_delete: "Are you sure you want to delete this noshi?"
+  check_all: "Check all"
+  format_title: "Paper Format"
+  background_select: "Background Select"
+  omotegaki_select: "Occasion"
+  size_select: "Size"
+  name_select: "Name"
+  preview_header: "Preview"
+  preview_hint: "You can drag the [occasion] and [name] to change their position."
+  preview_text: "The preview will be displayed here."
+  create: "Create"
+  create_and_save: "Create and save"
+  noshi_processing: "Processed..."
+  noshi_created: "Noshi was successfully queued for creation"
+  noshi_fail: "Noshi was not created. %{errors}"
+  noshi_modified: "Noshi was successfully queued for modification."
+  noshis_destroyed: "%{count} noshis were successfully deleted."
+  noshi_destroyed: "Noshi was deleted."
+  noshi_title: "Noshi for ocassion: [%{occasion}] and with names: [%{names}]"
+  about_header: "About"
+  about_text:
+    "Noshi is an ornament attached to gifts and presents offered on festive occasions in Japan. <br>
+    It is a yellow piece of paper wrapped in a sheet of colored paper folded in a long hexagonal shape. <br>
+    Sometimes noshi marks are printed on gift envelopes as simplified forms of noshi.<br>
+    Noshi is often used in combination with colored paper strings (called mizuhiki in Japanese) used to tie a gift.<br>"
+  languages:
+    en: "English"
+    ja: "Japanese"
+  loading: "Loading..."
