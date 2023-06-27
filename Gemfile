@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 git_source(:github) { |_repo| 'https://github.com/#{repo}.git' }
 
-ruby '3.2.2'
+ruby File.read('.ruby-version').strip
 
 # DotEnv
 gem 'dotenv-rails', groups: %i[development test]
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails  /rails', branch: 'main'
-gem 'rails', '~> 7.0.3'
+gem 'rails', '~> 7'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
@@ -79,13 +79,13 @@ gem 'tailwindcss-rails', '~> 2.0'
 
 # Background jobs
 # https://www.bigbinary.com/books/learn-rubyonrails-book/sidekiq-in-heroku
-gem 'sidekiq', '~> 6.5'
+# gem 'sidekiq', '~> 6.5'
 
 # Image processing
-gem 'google-cloud-storage'
-gem 'image_processing'
-gem 'mini_magick'
+# gem 'google-cloud-storage'
+# gem 'image_processing'
+# gem 'mini_magick'
 
-# User authentication/authorization
+# User authentication / authorization
 gem 'devise', '~> 4.8'
 gem 'devise-i18n'

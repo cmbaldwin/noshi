@@ -13,7 +13,7 @@ module Noshiio
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
-    config.active_job.queue_adapter = :sidekiq
+    # config.active_job.queue_adapter = :sidekiq
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -28,5 +28,6 @@ module Noshiio
     config.i18n.fallbacks = [:en]
     config.eager_load_paths << Rails.root.join('lib')
     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
+    config.eager_load = true
   end
 end

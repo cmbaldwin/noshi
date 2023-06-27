@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'sidekiq/web'
+# require 'sidekiq/web'
 
 Rails.application.routes.draw do
   # Set up i18n routing
@@ -17,14 +17,14 @@ Rails.application.routes.draw do
     get 'noshis/new/(:ntype/:namae/:omotegaki)', as: :new_with_params, to: 'noshis#new'
     get 'about', to: 'noshis#about'
 
-    # Devise routes
-    devise_scope :user do
-      # Redirests signing out users back to sign-in
-      get 'users', to: 'devise/sessions#new'
-    end
-    devise_for :users, controllers: {
-      sessions: 'users/sessions'
-    }
+    # # Devise routes
+    # devise_scope :user do
+    #   # Redirests signing out users back to sign-in
+    #   get 'users', to: 'devise/sessions#new'
+    # end
+    # devise_for :users, controllers: {
+    #   sessions: 'users/sessions'
+    # }
   end
 
   # Redirects path with locale if no locale is specified
@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   }
 
   # Sidekiq Web UI (with devise)
-  authenticate :user, ->(user) { user.id == 1 } do
-    mount Sidekiq::Web => '/sidekiq'
-  end
+  # authenticate :user, ->(user) { user.id == 1 } do
+  #   mount Sidekiq::Web => '/sidekiq'
+  # end
 end

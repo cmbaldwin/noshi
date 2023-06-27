@@ -3,7 +3,7 @@ class NoshisController < ApplicationController
   before_action :authenticate_user!, only: %i[edit update destroy]
 
   def index
-    @noshis = Noshi.where(user: current_user)
+    # @noshis = Noshi.where(user: current_user)
     @noshi = Noshi.new
   end
 
