@@ -4,7 +4,7 @@
 
 Rails.application.routes.draw do
   # Set up i18n routing
-  scope '/:locale', locale: /en|ja/ do
+  scope '(/:locale)', locale: /en|ja/ do
     # Root to Noshis index
     root 'noshis#index'
 
@@ -14,10 +14,10 @@ Rails.application.routes.draw do
         delete 'destroy_multiple'
       end
     end
-    get 'noshis/new/(:ntype/:namae/:omotegaki)', as: :new_with_params, to: 'noshis#new'
+    get 'noshis/new/(:ntype/:names/:omotegaki)', as: :new_with_params, to: 'noshis#new'
     get 'about', to: 'noshis#about'
 
-    # # Devise routes
+    # # Devise routes for adding users to app at a later time
     # devise_scope :user do
     #   # Redirests signing out users back to sign-in
     #   get 'users', to: 'devise/sessions#new'
@@ -26,12 +26,6 @@ Rails.application.routes.draw do
     #   sessions: 'users/sessions'
     # }
   end
-
-  # Redirects path with locale if no locale is specified
-  root to: redirect("/#{I18n.default_locale}", status: 302), as: :redirected_root
-  get '/*path', to: redirect("/#{I18n.default_locale}/%<path>s", status: 302), constraints: lambda { |req|
-    !req.path.start_with?('/noshi/') && !req.path.start_with?('/ja/noshi/') && !req.path.start_with?('/en/noshi/')
-  }
 
   # Sidekiq Web UI (with devise)
   # authenticate :user, ->(user) { user.id == 1 } do

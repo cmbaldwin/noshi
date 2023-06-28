@@ -28,6 +28,8 @@ export default class NoshiPreview {
 
     this._paperSize = document.querySelector(".noshi_form input:checked").value;
     this._nType = this._noshiTypeField.value;
+    this._nTypeUrl =
+      this._noshiDesignList.querySelectorAll(".noshi")[0].dataset.fullNoshiUrl;
     this._ometegaki = this._omotegakiInput.value;
     this._ometegakiSizePt = this._paperSize == "A4" ? 156 : 132; // 36px for two characters * 0.75 for px -> pt
     this._ometegakiOffset;
@@ -210,6 +212,7 @@ export default class NoshiPreview {
     selected.classList.add("bg-sky-500");
     // Set state value
     this._nType = designNum;
+    this._nTypeUrl = selected.dataset.fullNoshiUrl;
     // Set form value
     noshiInputField.value = designNum;
   }
@@ -342,7 +345,7 @@ export default class NoshiPreview {
     // ImageMagick uses points for font sizing, will need this later for scaling
     // 1pt = 1/72th of 1in, 1px = 1/96th of 1in, https://pixelsconverter.com/pt-to-px
     const nType = parseInt(this._nType) ? parseInt(this._nType) : 1;
-    const bgURL = encodeURI(`noshi/noshi${nType}.jpg`);
+    const bgURL = encodeURI(this._nTypeUrl);
     // set width to 100% if landscape, otherwise user fractional width
     const landscapeWidth = this._paperSize.includes("縦")
       ? " mx-auto w-full"
