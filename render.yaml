@@ -1,6 +1,7 @@
 databases:
   - name: noshi
     databaseName: noshi
+    plan: free
     user: noshi
 
 services:
@@ -12,6 +13,7 @@ services:
     ipAllowList: []
   - type: web
     name: noshi
+    plan: free
     runtime: ruby
     region: oregon
     buildCommand: "./bin/render-build.sh"
