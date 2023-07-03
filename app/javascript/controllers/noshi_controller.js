@@ -44,7 +44,9 @@ export default class extends Controller {
   }
 
   previewToImage() {
-    const preview = document.querySelector(".preview_area");
+    const preview = document.querySelector(".preview_paper");
+    this.togglePreviewClasses(preview);
+    // get form data
     const formData = new FormData(document.querySelector("#new_noshi"));
     window.htmlToImage
       .toPng(preview, this.option(formData))
@@ -53,20 +55,37 @@ export default class extends Controller {
         const imageArea = document.querySelector("#noshi_download_preview");
         const image = document.createElement("img");
         image.src = dataUrl;
-        image.style.cssText = "margin: 2rem auto; width: auto; height: 400px;";
+        image.style.cssText = "width: auto; height: 400px;";
         imageArea.innerHTML = "";
         imageArea.appendChild(image);
         // Download button downloads new image
         const link = document.querySelector(".noshi_download");
         link.download = "noshi.png";
         link.href = dataUrl;
+        this.togglePreviewClasses(preview);
       })
       .catch((error) => {
         console.error("Oops, something went wrong!", error);
       });
   }
 
+  togglePreviewClasses(e) {
+    // Toggle certain classes for preview so they don't appear when printed
+    // find preview_paper
+    const classes = [
+      "rounded",
+      "rounded-t-none",
+      "border",
+      "border-slate-100",
+      "bg-slate-100",
+    ];
+    classes.forEach((classname) => {
+      e.classList.toggle(classname);
+    });
+  }
+
   option(formData) {
+    const [width, height] = this.paperSize(formData);
     const filter = (node) => {
       const exclusionClasses = ["noshi_preview_display_info"];
       return !exclusionClasses.some((classname) =>
@@ -77,7 +96,12 @@ export default class extends Controller {
       filter: filter,
       pixelRatio: 6,
       style: {
-        transform: "rotate(-90deg)",
+        minHeight: "100%",
+        maxWidth: "100%",
+        width: "100%",
+        height: "100%",
+        margin: "0",
+        padding: "0",
       },
     };
   }
