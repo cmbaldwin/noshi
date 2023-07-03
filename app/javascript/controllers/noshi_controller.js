@@ -55,7 +55,8 @@ export default class extends Controller {
         const imageArea = document.querySelector("#noshi_download_preview");
         const image = document.createElement("img");
         image.src = dataUrl;
-        image.style.cssText = "width: auto; height: 400px;";
+        image.style.cssText = "margin: 2rem auto; width: auto; height: 400px;";
+        image.classList.add("rounded", "border", "border-slate-100");
         imageArea.innerHTML = "";
         imageArea.appendChild(image);
         // Download button downloads new image
