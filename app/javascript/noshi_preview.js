@@ -213,6 +213,7 @@ export default class NoshiPreview {
     // Set state value
     this._nType = designNum;
     this._nTypeUrl = selected.dataset.fullNoshiUrl;
+    console.log(this._nTypeUrl, this._nType);
     // Set form value
     noshiInputField.value = designNum;
   }
