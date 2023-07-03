@@ -76,6 +76,9 @@ export default class extends Controller {
     return {
       filter: filter,
       pixelRatio: 6,
+      style: {
+        transform: "rotate(-90deg)",
+      },
     };
   }
 
