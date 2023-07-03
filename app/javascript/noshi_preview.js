@@ -415,7 +415,7 @@ export default class NoshiPreview {
     const omotegakiNode = document.querySelector(".preview_omotegaki");
     const omotegakiClone = omotegakiNode.cloneNode(true);
     omotegakiClone.style.position = "absolute";
-    omotegakiClone.classList.add("text-slate-300", "omotegaki_shadow");
+    omotegakiClone.classList.add("omotegaki_shadow", "takao-pmincho");
     omotegakiClone.style.zIndex = "9";
     omotegakiClone.style.left =
       previewPaper.offsetWidth * portrait_gravitys[0] -
@@ -441,11 +441,7 @@ export default class NoshiPreview {
       "mx-auto",
       "cursor-ns-resize"
     );
-    namesClone.classList.add(
-      "text-slate-300",
-      "names_shadow",
-      "cursor-default"
-    );
+    namesClone.classList.add("takao-pmincho", "names_shadow", "cursor-default");
     namesClone.style.position = "absolute";
     namesClone.style.paddingBottom = `${namesPaddingBottom}px`;
     namesClone.style.zIndex = "9";
