@@ -462,66 +462,60 @@ export default class NoshiPreview {
   _dragListener() {
     const omotegakiEl = document.querySelector(".preview_omotegaki_span");
     const namesEl = document.querySelector(".preview_names");
+    const previewAreaBounds = this._previewArea.getBoundingClientRect();
+
+    function touchHandler(event) {
+      var touch = event.changedTouches[0];
+      var simulatedEvent = new MouseEvent(
+        {
+          touchstart: "mousedown",
+          touchmove: "mousemove",
+          touchend: "mouseup",
+        }[event.type],
+        true,
+        true,
+        window,
+        1,
+        touch.screenX,
+        touch.screenY,
+        touch.clientX,
+        touch.clientY,
+        false,
+        false,
+        false,
+        false,
+        0,
+        null
+      );
+      touch.target.dispatchEvent(simulatedEvent);
+    }
+
+    document.addEventListener("touchstart", touchHandler, true);
+    document.addEventListener("touchmove", touchHandler, true);
+    document.addEventListener("touchend", touchHandler, true);
+    document.addEventListener("touchcancel", touchHandler, true);
+
     [omotegakiEl, namesEl].forEach((el) => {
-      function touchHandler(event) {
-        var touch = event.changedTouches[0];
-        var simulatedEvent = document.createEvent("MouseEvent");
-        simulatedEvent.initMouseEvent(
-          {
-            touchstart: "mousedown",
-            touchmove: "mousemove",
-            touchend: "mouseup",
-          }[event.type],
-          true,
-          true,
-          window,
-          1,
-          touch.screenX,
-          touch.screenY,
-          touch.clientX,
-          touch.clientY,
-          false,
-          false,
-          false,
-          false,
-          0,
-          null
-        );
-        touch.target.dispatchEvent(simulatedEvent);
-      }
-      document.addEventListener("touchstart", touchHandler, true);
-      document.addEventListener("touchmove", touchHandler, true);
-      document.addEventListener("touchend", touchHandler, true);
-      document.addEventListener("touchcancel", touchHandler, true);
+      const parentElement = el.parentElement;
+
       el.addEventListener("mousedown", (e) => {
         const initMouseY = e.clientY;
-        const prevBounds = this._previewArea.getBoundingClientRect();
         const elBounds = el.getBoundingClientRect();
-
         const move = (ev) => {
-          // difference from the initial added to the initial margin
           const diff = ev.clientY - initMouseY;
           let margin;
-          // Omotegaki
           if (el === omotegakiEl) {
-            margin = prevBounds.top - elBounds.top + 1; // 1 for border
-            // Set state values
+            margin = previewAreaBounds.top - elBounds.top + 1; // 1 for border
             this._ometegakiTMargin = Math.abs(margin) + diff;
             this._setOmotegakiReferences();
-            // Alter rendered preview
-            el.parentElement.style.paddingTop = `${this._ometegakiTMargin}px`;
-            // Names
+            parentElement.style.paddingTop = `${this._ometegakiTMargin}px`;
           } else {
-            margin = prevBounds.bottom - elBounds.bottom - 1; // 1 for border
-            // Set state values
+            margin = previewAreaBounds.bottom - elBounds.bottom - 1; // 1 for border
             this._namesBMargin = margin - diff;
             this._setNameReferences();
-            // Alter rendered preview
-            el.parentElement.style.paddingBottom = `${this._namesBMargin}px`;
-            // Set top margin after rendered
+            parentElement.style.paddingBottom = `${this._namesBMargin}px`;
             this._setNameTMargin();
           }
-          // Shadowing for portrait mode
           if (this._paperSize.includes("縦")) {
             ["names_shadow", "omotegaki_shadow"].forEach((els) => {
               document.querySelectorAll(`.${els}`).forEach((el) => el.remove());
@@ -536,10 +530,7 @@ export default class NoshiPreview {
         };
 
         document.addEventListener("mousemove", move);
-        document.addEventListener("mouseup", () => {
-          document.removeEventListener("mousemove", move);
-          document.removeEventListener("mouseup", remove);
-        });
+        document.addEventListener("mouseup", remove);
       });
     });
   }
