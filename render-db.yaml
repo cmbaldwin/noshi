@@ -1,3 +1,9 @@
+databases:
+  - name: noshi
+    databaseName: noshi
+    plan: free
+    user: noshi
+
 services:
   - type: redis
     name: noshi-sidekiq-redis

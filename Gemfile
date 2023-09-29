@@ -12,8 +12,8 @@ gem 'rails', '~> 7'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 
-# Use postgresql as the database for Active Record
-gem 'pg', '~> 1.1'
+# Use postgresql as the database for Active Record, removed for this project
+# gem 'pg', '~> 1.1'
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '~> 5.0'
@@ -74,7 +74,7 @@ group :test do
   gem 'webdrivers'
 end
 
-# Design ramework
+# Design framework
 gem 'tailwindcss-rails', '~> 2.0'
 
 # Background jobs

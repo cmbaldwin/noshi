@@ -39,28 +39,8 @@
       </div>
       <div data-nav-target="mobileNav" class="w-full lg:w-auto block lg:grow lg:flex items-start lg:items-center hidden lg:flex">
         <div class="grow text-lg lg:text-xl">
-          <% if false # user_signed_in? %>
-            <%# link_to "🖊", new_noshi_path, class: 'px-2' %>
-            <%# link_to "🖨", root_path, class: 'px-2' %>
-            <%# link_to "🧐", about_path, class: 'px-2' %>
-          <% end %>
         </div>
         <div class="text-left lg:text-right flex">
-          <% if false # user_signed_in? %>
-            <%# button_to(
-                  t(:sign_out),
-                  destroy_user_session_path,
-                  method: :delete,
-                  class: 'inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-2 lg:mt-0'
-                ) %>
-          <% else %>
-            <%# button_to(
-                  t(:sign_in),
-                  new_user_session_path,
-                  class: 'cursor-default hidden inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-2 lg:mt-0',
-                  'disabled' => 'disabled'
-                ) %>
-          <% end %>
           <%= form_for 'set_locale' do |f| %>
             <%= f.select :locale, options_for_select(
                   I18n.available_locales.map { |l| [l.to_s.humanize, l.to_s] },

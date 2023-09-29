@@ -583,6 +583,6 @@ export default class NoshiPreview {
     }
 
     // Debugging
-    //console.log(this);
+    console.log(this);
   }
 }
