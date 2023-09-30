@@ -46,10 +46,11 @@ export default class extends Controller {
   previewToImage() {
     const preview = document.querySelector(".preview_paper");
     this.togglePreviewClasses(preview);
+    this.absolutePositionText(preview);
     // get form data
     const formData = new FormData(document.querySelector("#new_noshi"));
     window.htmlToImage
-      .toPng(preview, this.option(formData))
+      .toJpeg(preview, this.option(formData))
       .then((dataUrl) => {
         // Append image to preview area
         const imageArea = document.querySelector("#noshi_download_preview");
@@ -82,6 +83,31 @@ export default class extends Controller {
     ];
     classes.forEach((classname) => {
       e.classList.toggle(classname);
+    });
+  }
+
+  absolutePositionText(preview) {
+    // This will be reset when the modal is closed or page is reloaded, so no need to un-toggle
+    preview.querySelectorAll(".text_original").forEach((text) => {
+      // Find current left position of centered text element relative to .preview_area
+      const textPosition = text.getBoundingClientRect();
+      const previewPosition = preview.getBoundingClientRect();
+      const leftPosition = textPosition.left - previewPosition.left;
+      // Set absolute position of text element
+      text.style.position = "absolute";
+      text.style.left = `${leftPosition}px`;
+      // .preview_names .text_original needs to set bottom position based on padding-bottom of .names_container
+      // check is text element has class .preview_names
+      if (text.classList.contains("preview_names")) {
+        // find .names_container
+        const namesContainer = preview.querySelector(".names_container");
+        // find padding-bottom of .names_container
+        const paddingBottom = parseInt(
+          window.getComputedStyle(namesContainer).paddingBottom
+        );
+        // set bottom position of text element
+        text.style.bottom = `${paddingBottom}px`;
+      }
     });
   }
 

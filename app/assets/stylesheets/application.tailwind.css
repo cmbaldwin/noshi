@@ -1,4 +1,12 @@
 @tailwind base;
+
+/* https: //stackoverflow.com/questions/74980740/html2canvas-shifting-text-downwards */
+@layer base {
+  img {
+    @apply inline-block;
+  }
+}
+
 @tailwind components;
 @tailwind utilities;
 
@@ -11,3 +19,4 @@
 }
 
 */
+

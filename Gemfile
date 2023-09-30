@@ -75,7 +75,7 @@ group :test do
 end
 
 # Design framework
-gem 'tailwindcss-rails', '~> 2.0'
+gem 'tailwindcss-rails'
 
 # Background jobs
 # https://www.bigbinary.com/books/learn-rubyonrails-book/sidekiq-in-heroku
@@ -87,5 +87,5 @@ gem 'tailwindcss-rails', '~> 2.0'
 # gem 'mini_magick'
 
 # User authentication / authorization
-gem 'devise', '~> 4.8'
-gem 'devise-i18n'
+# gem 'devise', '~> 4.8'
+# gem 'devise-i18n'

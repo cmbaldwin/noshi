@@ -18,6 +18,7 @@ export default class NoshiPreview {
   _namesPosUpBtn = document.querySelector(".names-up");
   _namesPosDownBtn = document.querySelector(".names-down");
   _submitBtn = document.querySelector("#noshi_submit");
+  _modalCloseBtn = document.querySelector(".close_modal");
   _b5WidthPx = 3035; // px@300dpi
   _b5HeightPx = 2150;
   _a4WidthPx = 3508;
@@ -92,6 +93,7 @@ export default class NoshiPreview {
     // this._submitBtn.addEventListener("click", this._submitBtnListener.bind(this));
     this._updatePreview = this.updatePreview.bind(this);
     window.addEventListener("resize", this.onResize.bind(this));
+    this._modalCloseBtn.addEventListener("click", this._updatePreview);
     this.updatePreview();
   }
 
@@ -359,13 +361,13 @@ export default class NoshiPreview {
       : "width: 25%; ";
     return `
       <div class="rounded rounded-t-none border border-slate-100 bg-slate-100 preview_paper${landscapeWidth}" style="${portraitWidth}height: ${this._getPrevHeight()}px; aspect-ratio: ${this._getAspectRatio()}; background-image: url('${bgURL}'); position: relative; background-origin: border-box; background-repeat: no-repeat; background-position: center; background-size: cover;">
-        <div class="preview_omotegaki mx-auto" style="font-size: ${this._getOmotegakiPreviewFontSize()}px; padding-top: ${this._getOmotegakiOffset()}px; font-family: serif; writing-mode: vertical-rl; text-orientation: upright;">
+        <div class="preview_omotegaki text_original" style="margin: 0 auto; font-size: ${this._getOmotegakiPreviewFontSize()}px; padding-top: ${this._getOmotegakiOffset()}px; font-family: serif; writing-mode: vertical-rl; text-orientation: upright;">
           <span class="preview_omotegaki_span cursor-ns-resize select-none takao-pmincho" style="z-index: 10">${
             this._ometegaki
           }</span>
         </div>
         <div class="container-flex w-full names_container" style="padding-bottom: ${this._getNamesOffset()}px; position: absolute; bottom: 0px;">
-          <div class="preview_names flex mx-auto cursor-ns-resize select-none ${namesWidthClass}" style="align-content: center; justify-content: center; ${namesWidthStyle}">
+          <div class="preview_names text_original flex cursor-ns-resize select-none ${namesWidthClass}" style="margin: 0 auto; align-content: center; justify-content: center; ${namesWidthStyle}">
             ${this._getNames()}
           </div>
         </div>
@@ -416,6 +418,7 @@ export default class NoshiPreview {
     const omotegakiClone = omotegakiNode.cloneNode(true);
     omotegakiClone.style.position = "absolute";
     omotegakiClone.classList.add("omotegaki_shadow", "takao-pmincho");
+    omotegakiClone.classList.remove("text_original");
     omotegakiClone.style.zIndex = "9";
     omotegakiClone.style.left =
       previewPaper.offsetWidth * portrait_gravitys[0] -
@@ -436,6 +439,7 @@ export default class NoshiPreview {
     const namesClone = namesNode.cloneNode(true);
     const namesPaddingBottom = parseInt(namesContainer.style.paddingBottom);
     namesClone.classList.remove(
+      "text_original",
       "preview_names",
       "hover-border",
       "mx-auto",
