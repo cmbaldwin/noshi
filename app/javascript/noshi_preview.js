@@ -30,7 +30,9 @@ export default class NoshiPreview {
     this._paperSize = document.querySelector(".noshi_form input:checked").value;
     this._nType = this._noshiTypeField.value;
     this._nTypeUrl =
-      this._noshiDesignList.querySelectorAll(".noshi")[0].dataset.fullNoshiUrl;
+      this._noshiDesignList.querySelectorAll(".noshi")[
+        this._nType
+      ].dataset.fullNoshiUrl;
     this._ometegaki = this._omotegakiInput.value;
     this._ometegakiSizePt = this._paperSize == "A4" ? 156 : 132; // 36px for two characters * 0.75 for px -> pt
     this._ometegakiOffset;
@@ -346,13 +348,13 @@ export default class NoshiPreview {
   _getPreview() {
     // ImageMagick uses points for font sizing, will need this later for scaling
     // 1pt = 1/72th of 1in, 1px = 1/96th of 1in, https://pixelsconverter.com/pt-to-px
-    const nType = parseInt(this._nType) ? parseInt(this._nType) : 1;
+    // const nType = parseInt(this._nType) ? parseInt(this._nType) : 1;
     const bgURL = encodeURI(this._nTypeUrl);
     // set width to 100% if landscape, otherwise user fractional width
-    const landscapeWidth = this._paperSize.includes("縦")
+    const landscapeWidthClasses = this._paperSize.includes("縦")
       ? " mx-auto w-full"
       : " w-full";
-    const portraitWidth = this._paperSize.includes("縦")
+    const portraitWidthClasses = this._paperSize.includes("縦")
       ? "max-width: 400px; "
       : "";
     const namesWidthClass = this._paperSize.includes("縦") ? "" : "";
@@ -360,14 +362,38 @@ export default class NoshiPreview {
       ? "width: 33%; "
       : "width: 25%; ";
     return `
-      <div class="rounded rounded-t-none border border-slate-100 bg-slate-100 preview_paper${landscapeWidth}" style="${portraitWidth}height: ${this._getPrevHeight()}px; aspect-ratio: ${this._getAspectRatio()}; background-image: url('${bgURL}'); position: relative; background-origin: border-box; background-repeat: no-repeat; background-position: center; background-size: cover;">
-        <div class="preview_omotegaki text_original" style="margin: 0 auto; font-size: ${this._getOmotegakiPreviewFontSize()}px; padding-top: ${this._getOmotegakiOffset()}px; font-family: serif; writing-mode: vertical-rl; text-orientation: upright;">
-          <span class="preview_omotegaki_span cursor-ns-resize select-none takao-pmincho" style="z-index: 10">${
-            this._ometegaki
-          }</span>
+      <div class="rounded rounded-t-none border border-slate-100 bg-slate-100 preview_paper${landscapeWidthClasses}" 
+           style="${portraitWidthClasses}
+                  height: ${this._getPrevHeight()}px; 
+                  aspect-ratio: ${this._getAspectRatio()}; 
+                  background-image: url('${bgURL}'); 
+                  position: relative; 
+                  background-origin: border-box; 
+                  background-repeat: no-repeat; 
+                  background-position: center; 
+                  background-size: cover;">
+        <div class="preview_omotegaki text_original"
+             style="margin: 0 auto;
+                    font-size: ${this._getOmotegakiPreviewFontSize()}px; 
+                    padding-top: ${this._getOmotegakiOffset()}px; 
+                    font-family: serif; 
+                    writing-mode: vertical-rl; 
+                    text-orientation: upright;">
+          <span class="preview_omotegaki_span cursor-ns-resize select-none takao-pmincho" 
+                style="z-index: 10">
+                  ${this._ometegaki}
+          </span>
         </div>
-        <div class="container-flex w-full names_container" style="padding-bottom: ${this._getNamesOffset()}px; position: absolute; bottom: 0px;">
-          <div class="preview_names text_original flex cursor-ns-resize select-none ${namesWidthClass}" style="margin: 0 auto; align-content: center; justify-content: center; ${namesWidthStyle}">
+        <div class="container-flex w-full names_container"
+             style="
+              padding-bottom: ${this._getNamesOffset()}px;
+              position: absolute; 
+              bottom: 0px;">
+          <div class="preview_names text_original flex cursor-ns-resize select-none ${namesWidthClass}" 
+               style="margin: 0 auto;
+                      align-content: center;
+                      justify-content: center;
+                      ${namesWidthStyle}">
             ${this._getNames()}
           </div>
         </div>

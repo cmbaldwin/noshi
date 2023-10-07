@@ -36,13 +36,11 @@ class NoshisController < ApplicationController
   end
 
   def new
-    puts new_noshi_params
     @noshi = if new_noshi_params.empty?
                Noshi.new
              else
                Noshi.new(new_noshi_params)
              end
-    puts @noshi.attributes
   end
 
   # GET /noshis/1/edit
@@ -89,6 +87,8 @@ class NoshisController < ApplicationController
   def new_noshi_params
     # Split names by comma or space
     params[:names] = params[:names].split(/[, ]+/).flatten if params[:names].present?
+    # ntype to integer
+    params[:ntype] = params[:ntype].to_i if params[:ntype].present?
     # Sanitize params
     sanitized_params = params.slice(:ntype, :omotegaki, :names)
     sanitized_params.permit!

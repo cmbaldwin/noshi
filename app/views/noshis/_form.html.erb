@@ -84,13 +84,17 @@
           <div class="overflow-scroll mx-auto" style="max-height: 500px;" id="noshi_design_list">
             <% ntype = @noshi.ntype %>
             <% ntype ||= 1 %>
-            <% 14.times do |n| %>
-              <div class="noshi cursor-pointer hover:bg-sky-200 active:bg-sky-400 h-60 box-border bg-contain bg-no-repeat bg-center p-1 m-1 border border-slate-100<%= ' d-none' unless n < 14 %><%= ' bg-sky-500' if n == ntype - 1 %> landscape-noshi" style="background-image: url(<%= asset_path("noshi/thumbs/noshi#{n + 1}-thumb.jpg") %>)" id="list-noshi-<%= n %>" href="" data-noshi-id="<%= n %>" data-full-noshi-url="<%= asset_path("noshi/noshi#{n + 1}.jpg") %>">
-              </div>
-            <% end %>
-            <% 7.times do |t| %>
-              <% n = t + 14 %>
-              <div class="noshi cursor-pointer hover:bg-sky-200 active:bg-sky-400 h-60 box-border bg-contain bg-no-repeat bg-center p-1 m-1 border border-slate-100<%= ' d-none' unless n > 14 %><%= ' bg-sky-500' if n == ntype - 1 %> portrait-noshi" style="background-image: url(<%= asset_path("noshi/thumbs/noshi#{n + 1}-thumb.jpg") %>)" id="list-noshi-<%= n %>" href="" data-noshi-id="<%= n %>" data-full-noshi-url="<%= asset_path("noshi/noshi#{n + 1}.jpg") %>">
+            <% base_class = 'noshi cursor-pointer hover:bg-sky-200 active:bg-sky-400 h-60 box-border bg-contain bg-no-repeat bg-center p-1 m-1 border border-slate-100' %>
+            <% 21.times do |n| %>
+              <% noshi_thumb = asset_path("noshi/thumbs/noshi#{n + 1}-thumb.jpg") %>
+              <% noshi_img = asset_path("noshi/noshi#{n + 1}.jpg") %>
+              <% n_class = base_class + "#{' d-none' unless n < 14}#{' bg-sky-500' if n == ntype}#{n < 14 ? ' landscape-noshi' : ' portrait-noshi'}" %>
+              <div 
+                class="<%= n_class %>" 
+                style="background-image: url(<%= noshi_thumb %>)" 
+                id="list-noshi-<%= n %>" 
+                href="" data-noshi-id="<%= n %>" 
+                data-full-noshi-url="<%= noshi_img %>">
               </div>
             <% end %>
           </div>
