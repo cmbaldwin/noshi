@@ -33,4 +33,10 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 .env
+.env.*
+!.env.example
 session-history/
+
+# Kamal
+/.kamal/secrets
+/.kamal/secrets-*
