@@ -44,7 +44,7 @@
 </div>
 
 
-<%= form_for(@noshi, html: { class: 'h-100 noshi_form' }, remote: true) do |f| %>
+<%= form_with(model: @noshi, html: { class: 'h-100 noshi_form' }) do |f| %>
   <% if @noshi.errors.any? %>
     <div class="container rounded bg-slate-300 hover:bg-slate-400 border border-dashed hover:border-solid mx-6 my-4 p-2">
       <div class="text-base lg:text-xl block">

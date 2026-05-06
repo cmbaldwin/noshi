@@ -41,7 +41,7 @@
         <div class="grow text-lg lg:text-xl">
         </div>
         <div class="text-left lg:text-right flex">
-          <%= form_for 'set_locale' do |f| %>
+          <%= form_with(scope: "set_locale") do |f| %>
             <%= f.select :locale, options_for_select(
                   I18n.available_locales.map { |l| [l.to_s.humanize, l.to_s] },
                   I18n.locale
