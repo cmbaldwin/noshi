@@ -1,0 +1,45 @@
+.git
+.gitignore
+.dockerignore
+.env*
+.bundle
+.byebug_history
+.rspec
+.ruby-lsp
+
+# Ignore artifacts that we don't need in the image
+log/*
+!log/.keep
+tmp/*
+!tmp/.keep
+storage/*
+!storage/.keep
+public/assets
+
+# Local-only config and secrets
+.kamal/secrets
+config/ssl/*.pem
+config/master.key
+
+# IDE / OS junk
+.idea
+.vscode
+.DS_Store
+
+# Test output
+coverage
+test/reports
+
+# Pre-existing ActiveRecord / Devise leftovers (kept on disk for reference)
+controllers_removed/
+db_removed/
+models_removed/
+views_removed/
+
+# JS toolchain not used (importmap-only)
+node_modules
+yarn-error.log
+
+# Plan / docs that don't belong in the image
+KAMAL_DEPLOY_PLAN.md
+session-history/
