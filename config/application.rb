@@ -8,7 +8,7 @@ require "rails/test_unit/railtie"
 
 Bundler.require(*Rails.groups)
 
-Dotenv::Railtie.load if %w[development test].include?(ENV["RAILS_ENV"])
+Dotenv::Rails.load if %w[development test].include?(ENV["RAILS_ENV"])
 
 module Noshiio
   class Application < Rails::Application
