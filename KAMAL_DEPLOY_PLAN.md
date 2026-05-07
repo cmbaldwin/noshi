@@ -205,7 +205,14 @@ One ~150-200MB Rails container. No accessories. No DB. No Redis. Single web serv
 
 - [x] PR #2 (御出産祝 → 御出産御祝) merged to main
 - [x] Plan drafted
-- [ ] Decision: 1 branch vs 3 PRs
-- [ ] Phase 1 — strip Rails
-- [ ] Phase 2 — Kamal scaffolding
-- [ ] Phase 3 — first deploy
+- [x] Single-branch approach chosen
+- [x] Phase 1 — strip Rails (Rails 8 + Ruby 4 + Propshaft, no AR/AS/AM/AC)
+- [x] Phase 2 — Kamal scaffolding (Dockerfile, deploy.yml, .kamal/secrets)
+- [x] Phase 3 — first deploy → **live at https://noshi.moab.jp** ✅
+
+## Lessons learned (for future deploys)
+
+- Cloudflare origin certs in `MOAB/Production` 1Password vault are **per-subdomain**, not wildcard. Each new subdomain needs its own cert — or generate a wildcard `*.moab.jp` once.
+- For Cloudflare SSL: keep certs as **local PEM files in `config/ssl/`** (gitignored) and read them via `$(cat ...)` in `.kamal/secrets`. `kamal secrets extract` mangles newlines on multi-line values.
+- The kamal-proxy on the shared moab server needed upgrading (v0.9.0 → v0.9.2) for Kamal 2.11+; one-time `kamal proxy reboot` did it.
+- App has no encrypted credentials — uses `SECRET_KEY_BASE` env var directly (no `credentials.yml.enc`).
