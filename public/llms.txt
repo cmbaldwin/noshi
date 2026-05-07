@@ -1,0 +1,37 @@
+# Noshi (熨斗) — Japanese Gift Envelope Generator
+
+> https://noshi.moab.jp
+
+A free, bilingual (Japanese/English) web tool for generating *noshi* (熨斗) — the decorative paper bands printed on Japanese gift envelopes (*noshigami*, 熨斗紙).
+
+## What it does
+
+Users fill in three fields and download a print-ready JPEG:
+
+- **Omotegaki (表書き)** — the gift occasion label (e.g. 御祝, 御礼, 内祝, 御出産御祝)
+- **Names (名前)** — the giver's name(s), up to several recipients
+- **Style** — a choice of traditional noshi background designs and paper sizes (A4/B5, portrait/landscape)
+
+No account required. Zero data stored. Everything renders in the browser via JavaScript canvas.
+
+## Pages
+
+- `/` or `/ja/` — Main generator (Japanese, default)
+- `/en/` — Main generator (English)
+- `/about` — About page
+
+## Technical notes
+
+- Rails 8 / Ruby 4.0, no database, fully stateless
+- Frontend: Stimulus + html-to-image library for JPEG export
+- Bilingual: Japanese (default) and English via Rails i18n
+
+## Optional: Deep-link to a pre-filled noshi
+
+You can link directly to a pre-filled form:
+
+```
+https://noshi.moab.jp/noshis/new/{ntype}/{names}/{omotegaki}
+```
+
+Example: `https://noshi.moab.jp/noshis/new/1/田中/御祝`

@@ -1,8 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= I18n.locale %>">
   <head>
     <title>Noshi | 熨斗</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Free bilingual tool to generate noshi (熨斗) — the decorative bands printed on Japanese gift envelopes. Choose an occasion, add names, pick a design, and download a print-ready JPEG.">
+    <link rel="canonical" href="https://noshi.moab.jp<%= request.path %>">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Noshi 熨斗">
+    <meta property="og:title" content="Noshi | 熨斗 — Japanese Gift Envelope Generator">
+    <meta property="og:description" content="Free bilingual tool to generate noshi (熨斗) for Japanese gift envelopes. Download a print-ready JPEG in seconds.">
+    <meta property="og:url" content="https://noshi.moab.jp">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
