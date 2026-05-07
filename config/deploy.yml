@@ -7,7 +7,7 @@ ssh:
 
 servers:
   web:
-    - <%= ENV["DEPLOY_SERVER_IP"] %>
+  - <%= ENV["DEPLOY_SERVER_IP"] %>
 
 proxy:
   ssl:
@@ -25,18 +25,18 @@ registry:
   server: <%= ENV["ECR_REGISTRY"] %>
   username: AWS
   password:
-    - AWS_ECR_PASSWORD
+  - AWS_ECR_PASSWORD
 
 env:
   secret:
-    - RAILS_MASTER_KEY
-    - CLOUDFLARE_SSL_CERT_PEM
-    - CLOUDFLARE_SSL_KEY_PEM
+  - SECRET_KEY_BASE
+  - CLOUDFLARE_SSL_CERT_PEM
+  - CLOUDFLARE_SSL_KEY_PEM
 
 builder:
   arch: amd64
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"
-  shell:   app exec --interactive --reuse "bash"
-  logs:    app logs -f
+  shell: app exec --interactive --reuse "bash"
+  logs: app logs -f

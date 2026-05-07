@@ -139,7 +139,7 @@ registry:
 
 env:
   secret:
-    - RAILS_MASTER_KEY
+    - SECRET_KEY_BASE
     - CLOUDFLARE_SSL_CERT_PEM
     - CLOUDFLARE_SSL_KEY_PEM
 
@@ -160,8 +160,8 @@ DEPLOY_SERVER_IP=<your-server-ip>
 ECR_REGISTRY=<aws-account>.dkr.ecr.<region>.amazonaws.com
 ONE_PW_ACCOUNT=<1password-account-id>
 
-SECRETS=$(kamal secrets fetch --adapter 1password --account $ONE_PW_ACCOUNT --from "MOAB/Production" NOSHI_RAILS_MASTER_KEY CLOUDFLARE_SSL_CERT_PEM CLOUDFLARE_SSL_KEY_PEM)
-RAILS_MASTER_KEY=$(kamal secrets extract NOSHI_RAILS_MASTER_KEY ${SECRETS})
+SECRETS=$(kamal secrets fetch --adapter 1password --account $ONE_PW_ACCOUNT --from "MOAB/Production" NOSHI_SECRET_KEY_BASE CLOUDFLARE_SSL_CERT_PEM CLOUDFLARE_SSL_KEY_PEM)
+SECRET_KEY_BASE=$(kamal secrets extract NOSHI_SECRET_KEY_BASE ${SECRETS})
 CLOUDFLARE_SSL_CERT_PEM=$(kamal secrets extract CLOUDFLARE_SSL_CERT_PEM ${SECRETS})
 CLOUDFLARE_SSL_KEY_PEM=$(kamal secrets extract CLOUDFLARE_SSL_KEY_PEM ${SECRETS})
 AWS_ECR_PASSWORD=$(aws ecr get-login-password --region <region> --profile default)
@@ -172,7 +172,7 @@ AWS_ECR_PASSWORD=$(aws ecr get-login-password --region <region> --profile defaul
 ## Phase 3 — Deploy steps
 
 1. Create ECR repo `moab/noshi` in the relevant region
-2. Add new noshi `master.key` value to 1Password vault `MOAB/Production` as `NOSHI_RAILS_MASTER_KEY`
+2. Generate `NOSHI_SECRET_KEY_BASE` (`openssl rand -hex 64`) and add to 1Password vault `MOAB/Production`. App has no encrypted credentials — just needs this for cookie/CSRF signing.
 3. Confirm Cloudflare origin cert covers `*.moab.jp` — re-issue if not
 4. Confirm DNS `noshi.moab.jp` A-record → moab host, proxied through Cloudflare
 5. Populate `.kamal/secrets` (gitignored) with real `DEPLOY_SERVER_IP`, `ECR_REGISTRY`, `ONE_PW_ACCOUNT` values

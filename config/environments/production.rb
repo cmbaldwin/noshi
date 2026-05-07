@@ -20,6 +20,4 @@ Rails.application.configure do
 
   config.i18n.fallbacks = true
   config.active_support.report_deprecations = false
-
-  config.require_master_key = true
 end
