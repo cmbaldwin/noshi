@@ -7,12 +7,12 @@ ssh:
 
 servers:
   web:
-  - <%= ENV["DEPLOY_SERVER_IP"] %>
+  - 5.223.51.74
 
 proxy:
   ssl:
-    certificate_pem: <%= ENV["CLOUDFLARE_SSL_CERT_PEM"] %>
-    private_key_pem: <%= ENV["CLOUDFLARE_SSL_KEY_PEM"] %>
+    certificate_pem: <%= ENV['CLOUDFLARE_SSL_CERT_PEM'] %>
+    private_key_pem: <%= ENV['CLOUDFLARE_SSL_KEY_PEM'] %>
   host: noshi.moab.jp
   app_port: 80
   forward_headers: true
@@ -22,7 +22,7 @@ proxy:
     timeout: 30
 
 registry:
-  server: <%= ENV["ECR_REGISTRY"] %>
+  server: 047719641231.dkr.ecr.ap-southeast-2.amazonaws.com
   username: AWS
   password:
   - AWS_ECR_PASSWORD
