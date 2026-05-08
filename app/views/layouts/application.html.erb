@@ -71,5 +71,20 @@
       <% end %>
       <%= yield %>
     </main>
+
+    <footer class="mt-10 border-t border-slate-200 bg-slate-50 text-slate-500 text-xs">
+      <div class="container mx-auto px-4 lg:px-5 py-5 flex flex-col lg:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-1">
+          <span><%= t('footer_hosted_by') %></span>
+          <a href="https://moab.jp" target="_blank" rel="noopener noreferrer"
+             class="font-semibold text-sky-600 hover:underline">Moab.jp</a>
+        </div>
+        <nav class="flex items-center gap-4">
+          <%= link_to t('footer_privacy'), privacy_path, class: "hover:underline hover:text-slate-700" %>
+          <%= link_to t('footer_terms'),   terms_path,   class: "hover:underline hover:text-slate-700" %>
+        </nav>
+        <p><%= t('footer_copyright', year: Date.current.year) %></p>
+      </div>
+    </footer>
   </body>
 </html>
