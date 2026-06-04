@@ -2,9 +2,10 @@
 
 pin 'application', preload: true
 pin 'noshi_preview', preload: true
-pin 'html-to-image', to: 'https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js',
-                     preload: true
-pin 'downloadjs', to: 'https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js', preload: true
+# Vendored locally (see vendor/javascript/) so the JPEG download has no runtime
+# dependency on an external CDN. To update: download the matching version's
+# UMD build into vendor/javascript/html-to-image.min.js.
+pin 'html-to-image', to: 'html-to-image.min.js', preload: true
 pin '@hotwired/turbo-rails', to: 'turbo.min.js', preload: true
 pin '@hotwired/stimulus', to: 'stimulus.min.js', preload: true
 pin '@hotwired/stimulus-loading', to: 'stimulus-loading.js', preload: true
