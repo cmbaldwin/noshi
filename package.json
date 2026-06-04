@@ -1,0 +1,12 @@
+{
+  "name": "noshi",
+  "private": true,
+  "description": "Dev-only tooling for Noshi. The app frontend is importmap-based and needs no bundler; this exists solely to run the browser JS smoke test.",
+  "scripts": {
+    "smoke": "node test/javascript/smoke.test.mjs",
+    "smoke:install": "playwright install --with-deps chromium"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
+  }
+}

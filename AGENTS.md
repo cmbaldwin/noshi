@@ -85,6 +85,15 @@ The entire noshi preview is rendered in the browser via **`app/javascript/contro
 
 The `noshi_preview.js` handles live canvas rendering as the user types. The form at `app/views/noshis/_form.html.erb` drives all input.
 
+**Bootstrap gotcha (do not reintroduce):** `app/javascript/application.js` must NOT
+bootstrap the preview from a `turbo:load` listener alone. Because the app loads
+as a deferred importmap module, in production Turbo often finishes starting
+*after* the document has loaded and never dispatches the initial `turbo:load` —
+which previously left the site with no working JavaScript. `application.js` now
+also runs setup on `DOMContentLoaded`/immediately and keeps `turbo:load` only for
+subsequent Turbo visits. The smoke test guards this by rendering the page with
+`turbo:load` suppressed.
+
 Noshi background images are in `app/assets/images/noshi/` (full-size) and `app/assets/images/noshi/thumbs/` (thumbnails).
 
 ---
@@ -136,10 +145,38 @@ Run from `/Users/cody/Dev/noshi`. Requires:
 ## Testing
 
 ```bash
-bin/rails test
+bin/rails test            # Ruby controller/model tests (server-rendered HTML only)
+bin/rails test:smoke      # Browser JS smoke test (preview, buttons, download)
+bin/rails prebuild        # Both of the above — the pre-deploy gate
 ```
 
-Tests in `test/controllers/noshis_controller_test.rb` and `test/models/noshi_test.rb`. No system tests (selenium/capybara removed). No fixtures that reference a database.
+Ruby tests live in `test/controllers/noshis_controller_test.rb` and
+`test/models/noshi_test.rb`. They only assert on server-rendered HTML and **never
+execute JavaScript**, so they cannot catch "the JS doesn't run" regressions.
+
+Because the entire noshi UI (live preview, design/format switching, text
+positioning, and the JPEG download) is client-side, there is a browser smoke
+test at `test/javascript/smoke.test.mjs` driven by Playwright (headless Chromium).
+It loads the page and verifies the preview renders, the buttons work, and the
+download button produces an image — including a regression guard for the
+`turbo:load` bootstrap bug (see "Frontend architecture" below).
+
+First-time setup for the JS smoke test:
+
+```bash
+npm install            # installs Playwright (dev-only; the app needs no bundler)
+npm run smoke:install  # downloads the headless Chromium browser
+```
+
+`bin/rails test:smoke` boots a throwaway server on a free port and runs the smoke
+test against it. Set `SMOKE_BASE_URL=https://noshi.moab.jp` to smoke-test an
+already-running (e.g. deployed) site instead.
+
+The Kamal **`pre-build` hook** (`.kamal/hooks/pre-build`) runs `bin/rails prebuild`
+before every image build, so a broken preview/download aborts the deploy. The
+Docker image ships no Node toolchain, which is why these JS checks run on the
+deploy machine rather than inside the build. Bypass with
+`SKIP_PREBUILD_CHECKS=1 kamal deploy`.
 
 ---
 

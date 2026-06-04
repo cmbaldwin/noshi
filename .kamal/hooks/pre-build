@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Kamal pre-build hook: runs before the Docker image is built (and therefore
+# before every `kamal deploy`). It gates the build on the Ruby test suite and
+# the browser JS smoke test (preview, button functionality, and the download
+# button). A non-zero exit aborts the deploy.
+#
+# The Docker image itself ships no Node toolchain (importmap-only frontend), so
+# these JS checks run here, on the machine driving the deploy, instead.
+#
+# Skip locally with: SKIP_PREBUILD_CHECKS=1 kamal deploy
+
+set -e
+
+if [ "$SKIP_PREBUILD_CHECKS" = "1" ]; then
+  echo "pre-build: SKIP_PREBUILD_CHECKS=1 set, skipping test + JS smoke checks."
+  exit 0
+fi
+
+echo "pre-build: running Ruby tests + browser JS smoke test..."
+bin/rails prebuild

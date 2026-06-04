@@ -38,3 +38,7 @@
 !/app/assets/builds/.keep
 .env
 session-history/
+# Node deps (only used for the dev-only JS smoke test; importmap app needs no bundler)
+/node_modules
+/playwright-report
+/test-results
