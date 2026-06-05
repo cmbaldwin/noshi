@@ -1,0 +1,11 @@
+test:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+
+# Files (saved rendered noshi, community background uploads) live on the same
+# persistent volume as the SQLite database. To move to S3-compatible object
+# storage (AWS S3 / Cloudflare R2) later, add the aws-sdk-s3 gem and an :amazon
+# service here, then switch config.active_storage.service in production.rb.
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>

@@ -1,8 +1,12 @@
 require_relative "boot"
 
 require "rails"
+require "active_record/railtie"
+require "active_storage/engine"
+require "active_job/railtie"
 require "action_controller/railtie"
 require "action_view/railtie"
+require "action_mailer/railtie"
 require "active_model/railtie"
 require "rails/test_unit/railtie"
 

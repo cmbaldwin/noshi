@@ -10,6 +10,19 @@ gem "turbo-rails"
 gem "stimulus-rails"
 gem "tailwindcss-rails", "~> 2.7"
 
+# Persistence + accounts layer (added for user registration, saved noshi, and
+# community background uploads). The core generator still works without these,
+# but accounts, saving, and uploads require a database and object storage.
+gem "sqlite3", ">= 2.1"
+gem "image_processing", "~> 1.2" # ActiveStorage variants (background thumbnails)
+
+# Google OAuth sign-in
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection"
+
+# Billing for the paid image-storage tier
+gem "stripe"
+
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "bootsnap", require: false
 gem "thruster", require: false

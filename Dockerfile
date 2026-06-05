@@ -12,9 +12,10 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
 WORKDIR /rails
 
-# Runtime packages only (no postgres, no Node — importmap-only frontend, no DB)
+# Runtime packages: jemalloc (memory), sqlite3 (database), libvips (ActiveStorage
+# image thumbnails for community background uploads).
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 && \
+    apt-get install --no-install-recommends -y curl libjemalloc2 libsqlite3-0 libvips && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 ENV RAILS_ENV="production" \
