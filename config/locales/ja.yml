@@ -6,6 +6,18 @@ ja:
     signed_out: "ログアウトしました。"
     sign_in_failed: "ログインに失敗しました。もう一度お試しください。"
     login_required: "続行するにはログインしてください。"
+  billing:
+    title: "プランと請求"
+    plan_free: "無料"
+    plan_free_desc: "熨斗の設定を保存し、いつでも画像を再生成できます。"
+    plan_paid: "画像保存"
+    plan_paid_desc: "無料プランのすべてに加え、保存した熨斗ごとに完成した印刷用画像を保存します。"
+    current_plan: "現在のプラン"
+    upgrade_cta: "アップグレード"
+    manage: "サブスクリプションを管理"
+    success: "ありがとうございます！サブスクリプションが有効になりました。"
+    canceled: "購入をキャンセルしました。"
+    unavailable: "現在、請求は利用できません。"
   saved_noshi:
     title: "保存した熨斗"
     my_noshi: "マイ熨斗"

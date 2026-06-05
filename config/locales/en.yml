@@ -37,6 +37,18 @@ en:
     signed_out: "Signed out."
     sign_in_failed: "Sign-in failed. Please try again."
     login_required: "Please sign in to continue."
+  billing:
+    title: "Plans & billing"
+    plan_free: "Free"
+    plan_free_desc: "Save your noshi settings and regenerate the image any time."
+    plan_paid: "Image storage"
+    plan_paid_desc: "Everything in Free, plus we store the finished, print-ready image with each saved noshi."
+    current_plan: "Your current plan"
+    upgrade_cta: "Upgrade"
+    manage: "Manage subscription"
+    success: "Thanks! Your subscription is active."
+    canceled: "Checkout canceled."
+    unavailable: "Billing is not available right now."
   saved_noshi:
     title: "My noshi"
     my_noshi: "My noshi"

@@ -8,6 +8,7 @@
   <% unless current_user.image_storage? %>
     <div class="rounded bg-slate-50 border border-slate-200 text-slate-600 text-sm p-3 mb-4">
       <%= t('saved_noshi.free_tier_note') %>
+      <%= link_to t('billing.upgrade_cta'), billing_path, class: "underline text-sky-600" %>
     </div>
   <% end %>
 
