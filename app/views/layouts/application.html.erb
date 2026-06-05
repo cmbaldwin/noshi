@@ -49,6 +49,8 @@
       </div>
       <div data-nav-target="mobileNav" class="w-full lg:w-auto block lg:grow lg:flex items-start lg:items-center hidden lg:flex">
         <div class="grow text-lg lg:text-xl">
+          <%= link_to t('background.gallery_title'), backgrounds_path,
+                class: "text-white hover:text-teal-600 text-base lg:text-lg ml-1 lg:ml-0" %>
         </div>
         <div class="text-left lg:text-right flex items-center">
           <%= form_with(scope: "set_locale") do |f| %>

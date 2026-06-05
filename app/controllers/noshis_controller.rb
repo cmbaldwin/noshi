@@ -1,6 +1,7 @@
 class NoshisController < ApplicationController
   def index
     @noshi = Noshi.new
+    @community_backgrounds = approved_backgrounds
     # "Open in editor" from a saved noshi: settings are applied client-side.
     @saved_noshi = current_user.saved_noshis.find_by(id: params[:saved]) if user_signed_in? && params[:saved]
   end
@@ -11,6 +12,7 @@ class NoshisController < ApplicationController
              else
                Noshi.new(new_noshi_params)
              end
+    @community_backgrounds = approved_backgrounds
   end
 
   def create
@@ -22,6 +24,10 @@ class NoshisController < ApplicationController
   def terms; end
 
   private
+
+  def approved_backgrounds
+    Background.approved.with_attached_image.top_rated
+  end
 
   def new_noshi_params
     params[:names] = params[:names].split(/[, ]+/).flatten if params[:names].present?

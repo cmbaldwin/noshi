@@ -89,12 +89,27 @@
               <% noshi_thumb = asset_path("noshi/thumbs/noshi#{n + 1}-thumb.jpg") %>
               <% noshi_img = asset_path("noshi/noshi#{n + 1}.jpg") %>
               <% n_class = base_class + "#{' d-none' unless n < 14}#{' bg-sky-500' if n == ntype}#{n < 14 ? ' landscape-noshi' : ' portrait-noshi'}" %>
-              <div 
-                class="<%= n_class %>" 
-                style="background-image: url(<%= noshi_thumb %>)" 
-                id="list-noshi-<%= n %>" 
-                href="" data-noshi-id="<%= n %>" 
+              <div
+                class="<%= n_class %>"
+                style="background-image: url(<%= noshi_thumb %>)"
+                id="list-noshi-<%= n %>"
+                href="" data-noshi-id="<%= n %>"
                 data-full-noshi-url="<%= noshi_img %>">
+              </div>
+            <% end %>
+            <%# Approved community uploads, indexed after the 21 built-ins so the
+                fixed indices above stay stable. Orientation drives the
+                landscape/portrait filtering the preview already does. %>
+            <% Array(@community_backgrounds).each_with_index do |bg, i| %>
+              <% cid = 21 + i %>
+              <% orientation_class = bg.orientation == "portrait" ? "portrait-noshi hidden" : "landscape-noshi" %>
+              <div
+                class="<%= base_class %> <%= orientation_class %><%= ' bg-sky-500' if cid == ntype %>"
+                style="background-image: url(<%= url_for(bg.image.variant(resize_to_limit: [240, 240])) %>)"
+                id="list-noshi-<%= cid %>"
+                href="" data-noshi-id="<%= cid %>"
+                title="<%= bg.title %>"
+                data-full-noshi-url="<%= url_for(bg.image) %>">
               </div>
             <% end %>
           </div>

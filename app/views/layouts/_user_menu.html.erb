@@ -7,8 +7,14 @@
     <span class="text-white text-sm hidden lg:inline"><%= current_user.display_name %></span>
     <%= link_to t("saved_noshi.my_noshi"), saved_noshis_path,
           class: "text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 px-2 py-1" %>
+    <%= link_to t("background.my_uploads"), mine_backgrounds_path,
+          class: "text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 px-2 py-1 hidden lg:inline-block" %>
     <%= link_to t("billing.title"), billing_path,
           class: "text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 px-2 py-1 hidden lg:inline-block" %>
+    <% if current_user.admin? %>
+      <%= link_to t("background.moderation_title"), admin_backgrounds_path,
+            class: "text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 px-2 py-1 hidden lg:inline-block" %>
+    <% end %>
     <%= button_to t("auth.sign_out"), logout_path, method: :delete,
           class: "text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 px-2 py-1" %>
   <% else %>

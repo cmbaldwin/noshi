@@ -31,4 +31,10 @@ class ApplicationController < ActionController::Base
     session[:return_to] = request.fullpath if request.get?
     redirect_to root_path, alert: t("auth.login_required")
   end
+
+  def require_admin
+    return if current_user&.admin?
+
+    redirect_to root_path, alert: t("auth.login_required")
+  end
 end

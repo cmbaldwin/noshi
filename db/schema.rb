@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_05_005035) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_05_005036) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -42,6 +42,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_05_005035) do
   create_table "backgrounds", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
+    t.string "orientation", default: "landscape", null: false
     t.integer "ratings_count", default: 0, null: false
     t.integer "ratings_sum", default: 0, null: false
     t.string "status", default: "pending", null: false

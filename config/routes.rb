@@ -16,6 +16,15 @@ Rails.application.routes.draw do
     get  "billing",          to: "billing#show",     as: :billing
     post "billing/checkout", to: "billing#checkout", as: :billing_checkout
     post "billing/portal",   to: "billing#portal",   as: :billing_portal
+
+    resources :backgrounds, only: %i[index new create destroy] do
+      member { post :rate }
+      collection { get :mine }
+    end
+
+    namespace :admin do
+      resources :backgrounds, only: %i[index update]
+    end
     get "noshis/new(/:ntype/:names/:omotegaki)", as: :new_with_params, to: "noshis#new"
     get "about", to: "noshis#about"
     get "privacy", to: "noshis#privacy"
