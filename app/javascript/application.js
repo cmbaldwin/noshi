@@ -22,8 +22,71 @@ function setupPage() {
   if (form && !form.dataset.previewBooted) {
     form.dataset.previewBooted = "true";
     new NoshiPreview(); // Reset NoshiPreview instance on server interaction
+    applySavedSettings();
   }
   bindLocaleSelect();
+}
+
+// When the generator was opened from a saved noshi, the server embeds its
+// settings as JSON. Re-apply them to the form by driving the same events the
+// live preview already listens to, so the design is reproduced without
+// re-instantiating (and double-binding) the preview.
+function applySavedSettings() {
+  const el = document.querySelector("#saved_noshi_settings");
+  if (!el || el.dataset.applied) return;
+  el.dataset.applied = "true";
+
+  let s;
+  try {
+    s = JSON.parse(el.textContent);
+  } catch {
+    return;
+  }
+
+  const fire = (node, type) =>
+    node && node.dispatchEvent(new Event(type, { bubbles: true }));
+
+  if (s.paper_size) {
+    const radio = document.querySelector(
+      `input[name="noshi[paper_size]"][value="${s.paper_size}"]`
+    );
+    if (radio) {
+      radio.checked = true;
+      fire(radio, "change");
+    }
+  }
+  if (s.ntype != null) {
+    document
+      .querySelector(`#list-noshi-${s.ntype}`)
+      ?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  }
+  if (s.omotegaki != null) {
+    const txt = document.querySelector("#noshi_omotegaki");
+    if (txt) {
+      txt.value = s.omotegaki;
+      fire(txt, "input");
+    }
+  }
+  if (s.omotegaki_size != null) {
+    const r = document.querySelector(".omotegaki_size_select");
+    if (r) {
+      r.value = s.omotegaki_size;
+      fire(r, "change");
+    }
+  }
+  if (Array.isArray(s.names)) {
+    document.querySelectorAll(".name_input").forEach((inp) => {
+      inp.value = s.names[Number(inp.dataset.index)] ?? "";
+      fire(inp, "input");
+    });
+  }
+  if (s.font_size != null) {
+    const r = document.querySelector(".font_size");
+    if (r) {
+      r.value = s.font_size;
+      fire(r, "change");
+    }
+  }
 }
 
 function bindLocaleSelect() {

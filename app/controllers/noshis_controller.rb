@@ -1,6 +1,8 @@
 class NoshisController < ApplicationController
   def index
     @noshi = Noshi.new
+    # "Open in editor" from a saved noshi: settings are applied client-side.
+    @saved_noshi = current_user.saved_noshis.find_by(id: params[:saved]) if user_signed_in? && params[:saved]
   end
 
   def new

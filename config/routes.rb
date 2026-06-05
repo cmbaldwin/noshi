@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     root "noshis#index"
 
     resources :noshis, only: %i[create]
+    resources :saved_noshis, only: %i[index create destroy]
     get "noshis/new(/:ntype/:names/:omotegaki)", as: :new_with_params, to: "noshis#new"
     get "about", to: "noshis#about"
     get "privacy", to: "noshis#privacy"

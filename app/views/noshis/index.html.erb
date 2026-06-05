@@ -1,3 +1,8 @@
-<div data-controller="noshi">
+<div data-controller="noshi"
+     data-image-storage="<%= user_signed_in? && current_user.image_storage? %>">
+  <% if @saved_noshi %>
+    <%# Applied to the form by application.js once the preview has booted. %>
+    <script type="application/json" id="saved_noshi_settings"><%= raw @saved_noshi.settings.to_json %></script>
+  <% end %>
   <%= render 'form', locals: { noshi: @noshi }%>
 </div>

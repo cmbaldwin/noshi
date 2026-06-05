@@ -1,0 +1,43 @@
+<div class="container mx-auto">
+  <div class="flex items-center justify-between mt-4 mb-2">
+    <h1 class="text-xl lg:text-2xl font-semibold"><%= t('saved_noshi.title') %></h1>
+    <%= link_to t('saved_noshi.new_noshi'), root_path,
+          class: "text-sm border rounded px-3 py-2 bg-lime-300 hover:bg-lime-400" %>
+  </div>
+
+  <% unless current_user.image_storage? %>
+    <div class="rounded bg-slate-50 border border-slate-200 text-slate-600 text-sm p-3 mb-4">
+      <%= t('saved_noshi.free_tier_note') %>
+    </div>
+  <% end %>
+
+  <% if @saved_noshis.empty? %>
+    <p class="text-slate-500 p-6 text-center border border-dashed rounded">
+      <%= t('saved_noshi.empty') %>
+    </p>
+  <% else %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <% @saved_noshis.each do |saved| %>
+        <div class="border border-slate-200 rounded p-3 flex flex-col">
+          <div class="bg-slate-50 rounded mb-2 flex items-center justify-center h-40 overflow-hidden">
+            <% if saved.rendered_image.attached? %>
+              <%= image_tag saved.rendered_image, class: "max-h-40 w-auto object-contain" %>
+            <% else %>
+              <span class="text-slate-400 text-sm text-center px-2"><%= t('saved_noshi.settings_only') %></span>
+            <% end %>
+          </div>
+          <div class="font-medium truncate"><%= saved.title %></div>
+          <div class="text-xs text-slate-500 truncate"><%= saved.average_settings_summary %></div>
+          <div class="text-xs text-slate-400 mt-1"><%= l(saved.created_at, format: :long) rescue saved.created_at.strftime('%Y-%m-%d') %></div>
+          <div class="flex gap-2 mt-3">
+            <%= link_to t('saved_noshi.open'), root_path(saved: saved.id),
+                  class: "text-sm border rounded px-3 py-1 bg-sky-200 hover:bg-sky-300" %>
+            <%= button_to t('saved_noshi.delete'), saved_noshi_path(saved), method: :delete,
+                  form: { data: { turbo_confirm: t('saved_noshi.delete_confirm') } },
+                  class: "text-sm border rounded px-3 py-1 bg-white hover:bg-slate-100 text-slate-600" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

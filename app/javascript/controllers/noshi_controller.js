@@ -21,6 +21,81 @@ export default class extends Controller {
     this.previewToImage();
   }
 
+  // Persist the current design. Free users save settings only; paid (image
+  // storage) users also send the rendered JPEG, which the server attaches.
+  async saveNoshi(e) {
+    e.preventDefault();
+    const button = e.currentTarget;
+    const url = button.dataset.savedUrl;
+    if (!url) return;
+
+    const original = button.textContent;
+    button.disabled = true;
+
+    const payload = { settings: this.gatherSettings() };
+    if (this.element.dataset.imageStorage === "true") {
+      const dataUrl = await this.renderJpegDataUrl();
+      if (dataUrl) payload.rendered_image = dataUrl;
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "X-CSRF-Token": this.csrfToken(),
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.ok && data.redirect) {
+        window.location.href = data.redirect;
+      } else {
+        button.disabled = false;
+        button.textContent = original;
+        console.error("Save failed", data.errors || response.status);
+      }
+    } catch (error) {
+      button.disabled = false;
+      button.textContent = original;
+      console.error("Save failed", error);
+    }
+  }
+
+  gatherSettings() {
+    const form = document.querySelector("#new_noshi");
+    return {
+      paper_size: form?.querySelector('input[name="noshi[paper_size]"]:checked')?.value,
+      ntype: document.querySelector("#noshi_ntype")?.value,
+      omotegaki: document.querySelector("#noshi_omotegaki")?.value,
+      omotegaki_size: document.querySelector(".omotegaki_size_select")?.value,
+      font_size: document.querySelector(".font_size")?.value,
+      names: Array.from(document.querySelectorAll(".name_input")).map((i) => i.value),
+    };
+  }
+
+  // Render the live preview to a JPEG data URL (same pipeline as the download).
+  async renderJpegDataUrl() {
+    const preview = document.querySelector(".preview_paper");
+    if (!preview) return null;
+    this.togglePreviewClasses(preview);
+    this.absolutePositionText(preview);
+    const formData = new FormData(document.querySelector("#new_noshi"));
+    try {
+      return await window.htmlToImage.toJpeg(preview, this.option(formData));
+    } catch (error) {
+      console.error("Render failed", error);
+      return null;
+    } finally {
+      this.togglePreviewClasses(preview);
+    }
+  }
+
+  csrfToken() {
+    return document.querySelector('meta[name="csrf-token"]')?.content || "";
+  }
+
   appendSpinner() {
     const preview = document.querySelector("#noshi_download_preview");
     const spinner = document.createElement("div");

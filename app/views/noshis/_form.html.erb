@@ -176,11 +176,23 @@
           </div>
         </div>
         <%# f.submit t('create_and_save'), id: 'noshi_submit', class: 'disabled hidden rounded border border-slate-100 cursor-default text-slate-400 text-xl font-bold py-2 px-4 my-2 bg-lime-100 mt-2', 'disabled' => 'disabled', 'data-processing' => t('noshi_processing') %>
-        <%= f.submit t('create'), 
-                     id: 'create_now', 
-                     class: 'rounded border border-slate-100 hover:border-sky-300 hover:border-dashed active:border-solid cursor-pointer text-xl font-bold py-2 px-4 my-2 bg-lime-300 mt-2', 
-                     'data-disable-with' => t('noshi_processing'), 
+        <%= f.submit t('create'),
+                     id: 'create_now',
+                     class: 'rounded border border-slate-100 hover:border-sky-300 hover:border-dashed active:border-solid cursor-pointer text-xl font-bold py-2 px-4 my-2 bg-lime-300 mt-2',
+                     'data-disable-with' => t('noshi_processing'),
                      'data-action' => "click->noshi#createImage" %>
+        <% if user_signed_in? %>
+          <button type="button"
+                  id="save_noshi"
+                  class="rounded border border-slate-100 hover:border-sky-300 hover:border-dashed active:border-solid cursor-pointer text-xl font-bold py-2 px-4 my-2 bg-sky-200 mt-2"
+                  data-action="click->noshi#saveNoshi"
+                  data-saved-url="<%= saved_noshis_path %>"
+                  data-saved-redirect="true">
+            <%= t('saved_noshi.save_button') %>
+          </button>
+        <% else %>
+          <p class="text-xs text-slate-500 mt-2"><%= t('saved_noshi.sign_in_to_save') %></p>
+        <% end %>
       </div>
     </div>
   </div>
