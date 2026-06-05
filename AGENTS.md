@@ -6,7 +6,23 @@
 
 **Noshi.moab.jp** is a bilingual (Japanese/English) web app for generating *noshi* — the decorative folded paper bands traditionally attached to Japanese gift envelopes (*noshigami*, *熨斗紙*). The user fills in a gift type (*omotegaki*, e.g. 御祝), recipient names, and a visual style, then downloads a JPEG to print and attach.
 
-**Key constraint:** this is a zero-persistence app. There is no database, no user accounts, no background jobs. Every request is stateless.
+**The core flow is still client-side and account-free** — anyone can generate
+and download a noshi with no sign-in; the live preview and JPEG render entirely
+in the browser. On top of that there is now an optional accounts layer:
+
+- **Google OAuth sign-in** (OmniAuth) backed by a SQLite database.
+- **Saved noshi** — signed-in users save a design's *settings* (re-applied
+  client-side to regenerate). A paid tier (Stripe subscription) additionally
+  stores the rendered JPEG via ActiveStorage.
+- **Community backgrounds** — users upload background images that, after admin
+  moderation, appear in a public gallery (1–5 star ratings) and in the
+  generator's design picker.
+
+> **History:** the app was originally zero-persistence (no DB, no accounts).
+> That was intentionally reversed to add the features above; ActiveRecord,
+> ActiveStorage, ActiveJob, and ActionMailer are re-enabled in
+> `config/application.rb`. The "What was removed" list further down predates
+> this and is no longer accurate for the data layer.
 
 ---
 
@@ -26,22 +42,40 @@
 
 ---
 
-## Rails configuration (minimal/stripped)
+## Rails configuration
 
-`config/application.rb` loads only what's needed — **no ActiveRecord, no ActiveStorage, no ActionMailer, no ActionCable**:
+`config/application.rb` loads the data-layer railties (ActiveRecord,
+ActiveStorage, ActiveJob, ActionMailer) alongside the original
+controller/view/model stack. **ActionCable is still not loaded.**
 
-```ruby
-require "action_controller/railtie"
-require "action_view/railtie"
-require "active_model/railtie"
-require "rails/test_unit/railtie"
-```
+- **Database:** SQLite (`config/database.yml`), stored in `storage/` which is a
+  Kamal persistent volume in production. Run `bin/rails db:prepare` after pulling
+  schema changes; the Docker entrypoint runs it automatically on boot.
+- **Files:** ActiveStorage Disk service on the same volume (`config/storage.yml`).
+  Swap in S3/R2 there later if needed (add `aws-sdk-s3`).
+- **No `config/credentials.yml.enc`** — secrets come from env.
 
-No `config/database.yml`, no `db/` directory, no migrations.
+`SECRET_KEY_BASE` is required (cookie/CSRF signing). The accounts features add
+optional env vars (blank = feature degrades gracefully): `GOOGLE_CLIENT_ID`,
+`GOOGLE_CLIENT_SECRET`, `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`,
+`STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`. See `.env.example`; production values
+live in `.kamal/secrets` and are listed under `env.secret` in `config/deploy.yml`.
 
-`SECRET_KEY_BASE` is the only required runtime secret (cookie/CSRF signing). Set in `.kamal/secrets`, injected as an env var.
+### Accounts & data layer (cheat sheet)
 
-No `config/credentials.yml.enc` — that was intentionally dropped.
+- **Models:** `User` (OAuth identity + `stripe_customer_id` + `admin`),
+  `Subscription` (Stripe sub → `image_storage?` entitlement), `SavedNoshi`
+  (settings JSON + optional attached render), `Background` (uploaded image +
+  moderation `status` + rating tallies), `Rating` (1–5, unique per user/bg).
+- **Auth:** OmniAuth Google. Routes (`auth/*`, `stripe/webhook`) live **outside**
+  the `(/:locale)` scope for stable callback/webhook URLs. `current_user` /
+  `user_signed_in?` / `require_login` / `require_admin` in `ApplicationController`.
+- **Billing:** `BillingController` (Stripe Checkout + portal + webhook). Webhook
+  is CSRF-exempt and syncs `customer.subscription.*` via
+  `Subscription.upsert_from_stripe`.
+- **Uploads:** `BackgroundsController` (gallery/upload/mine/rate),
+  `Admin::BackgroundsController` (moderation). Approved uploads are appended to
+  the generator picker after the 21 built-ins (indices 21+).
 
 ---
 
