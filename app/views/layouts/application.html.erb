@@ -50,7 +50,7 @@
       <div data-nav-target="mobileNav" class="w-full lg:w-auto block lg:grow lg:flex items-start lg:items-center hidden lg:flex">
         <div class="grow text-lg lg:text-xl">
         </div>
-        <div class="text-left lg:text-right flex">
+        <div class="text-left lg:text-right flex items-center">
           <%= form_with(scope: "set_locale") do |f| %>
             <%= f.select :locale, options_for_select(
                   I18n.available_locales.map { |l| [l.to_s.humanize, l.to_s] },
@@ -58,6 +58,7 @@
                 ), {}, class: 'locale-select ml-2 inline-block text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 mt-2 lg:mt-0'
               %>
           <% end %>
+          <%= render "layouts/user_menu" %>
         </div>
       </div>
     </nav>

@@ -30,6 +30,13 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  auth:
+    sign_in_google: "Sign in with Google"
+    sign_out: "Sign out"
+    signed_in: "Signed in. Welcome!"
+    signed_out: "Signed out."
+    sign_in_failed: "Sign-in failed. Please try again."
+    login_required: "Please sign in to continue."
   sign_in: "Sign in"
   sign_up: "Sign up"
   sign_out: "Logout"

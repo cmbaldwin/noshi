@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  # Auth lives outside the /:locale scope so the OAuth callback URL is stable.
+  get  "auth/:provider/callback", to: "sessions#create"
+  get  "auth/failure",            to: "sessions#failure"
+  delete "logout",                to: "sessions#destroy", as: :logout
+
   scope "(/:locale)", locale: /en|ja/ do
     root "noshis#index"
 
