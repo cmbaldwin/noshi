@@ -108,6 +108,7 @@
                 style="background-image: url(<%= url_for(bg.image.variant(resize_to_limit: [240, 240])) %>)"
                 id="list-noshi-<%= cid %>"
                 href="" data-noshi-id="<%= cid %>"
+                data-background-id="<%= bg.id %>"
                 title="<%= bg.title %>"
                 data-full-noshi-url="<%= url_for(bg.image) %>">
               </div>

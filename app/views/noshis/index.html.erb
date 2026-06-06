@@ -1,5 +1,10 @@
 <div data-controller="noshi"
      data-image-storage="<%= user_signed_in? && current_user.image_storage? %>">
+  <% if @missing_background %>
+    <p class="text-orange-700 rounded bg-orange-50 border border-orange-200 text-center m-4 p-3">
+      <%= t('saved_noshi.missing_background') %>
+    </p>
+  <% end %>
   <% if @saved_noshi %>
     <%# Applied to the form by application.js once the preview has booted. %>
     <script type="application/json" id="saved_noshi_settings"><%= raw @saved_noshi.settings.to_json %></script>

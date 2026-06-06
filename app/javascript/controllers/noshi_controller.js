@@ -65,7 +65,7 @@ export default class extends Controller {
 
   gatherSettings() {
     const form = document.querySelector("#new_noshi");
-    return {
+    const settings = {
       paper_size: form?.querySelector('input[name="noshi[paper_size]"]:checked')?.value,
       ntype: document.querySelector("#noshi_ntype")?.value,
       omotegaki: document.querySelector("#noshi_omotegaki")?.value,
@@ -73,6 +73,12 @@ export default class extends Controller {
       font_size: document.querySelector(".font_size")?.value,
       names: Array.from(document.querySelectorAll(".name_input")).map((i) => i.value),
     };
+    // For community uploads, also record the background's stable id. The ntype
+    // index is positional (and reorders as the gallery changes), so background_id
+    // is what lets us reselect it — and detect when it's been deleted.
+    const active = document.querySelector("#noshi_design_list .noshi.bg-sky-500");
+    if (active?.dataset.backgroundId) settings.background_id = active.dataset.backgroundId;
+    return settings;
   }
 
   // Render the live preview to a JPEG data URL (same pipeline as the download).

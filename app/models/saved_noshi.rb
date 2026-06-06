@@ -8,7 +8,7 @@ class SavedNoshi < ApplicationRecord
 
   # The generator inputs we persist. Everything here is re-applied to the form
   # client-side to reproduce the design.
-  SETTING_KEYS = %w[paper_size ntype omotegaki omotegaki_size font_size names].freeze
+  SETTING_KEYS = %w[paper_size ntype omotegaki omotegaki_size font_size names background_id].freeze
 
   # Coerce arbitrary client-supplied params into a known-shape settings hash so
   # we never persist unexpected keys.

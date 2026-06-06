@@ -55,11 +55,20 @@ function applySavedSettings() {
       fire(radio, "change");
     }
   }
-  if (s.ntype != null) {
-    document
-      .querySelector(`#list-noshi-${s.ntype}`)
-      ?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  // Select the design tile. A saved community upload is identified by its stable
+  // background_id; if that tile is gone (deleted/unapproved) we leave the default
+  // design rather than guessing — the server shows a "background removed" warning.
+  // Built-in designs use the positional index: tile ids are the 0-based noshiId,
+  // while the saved ntype is noshiId + 1 (the form's design number).
+  let designTile = null;
+  if (s.background_id != null) {
+    designTile = document.querySelector(
+      `#noshi_design_list [data-background-id="${s.background_id}"]`
+    );
+  } else if (s.ntype != null) {
+    designTile = document.querySelector(`#list-noshi-${Number(s.ntype) - 1}`);
   }
+  designTile?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
   if (s.omotegaki != null) {
     const txt = document.querySelector("#noshi_omotegaki");
     if (txt) {

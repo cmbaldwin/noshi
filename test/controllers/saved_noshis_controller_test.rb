@@ -47,6 +47,25 @@ class SavedNoshisControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to saved_noshis_path
   end
 
+  test "opening a saved noshi warns when its community background was removed" do
+    user = create_user
+    bg = user.backgrounds.build(title: "BG", orientation: "landscape", status: "approved")
+    bg.image.attach(io: File.open(Rails.root.join("test/fixtures/files/sample.png")),
+                    filename: "sample.png", content_type: "image/png")
+    bg.save!
+    saved = user.saved_noshis.create!(title: "Uses bg", settings: { "background_id" => bg.id.to_s })
+    sign_in_as(user)
+
+    # Still present -> no warning.
+    get root_path(saved: saved.id)
+    assert_no_match I18n.t("saved_noshi.missing_background"), @response.body
+
+    # Removed -> warning shown, rest of the design still opens.
+    bg.destroy
+    get root_path(saved: saved.id)
+    assert_match I18n.t("saved_noshi.missing_background"), @response.body
+  end
+
   test "cannot open another user's saved noshi in the editor" do
     owner = create_user
     other = create_user

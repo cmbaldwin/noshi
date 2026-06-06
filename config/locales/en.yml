@@ -97,6 +97,7 @@ en:
     delete: "Delete"
     delete_confirm: "Delete this saved noshi?"
     settings_only: "Settings saved — open to regenerate"
+    missing_background: "The community background this noshi used has been removed. Everything else was restored — pick a new background to finish."
     free_tier_note: "On the free plan we save your settings; open a saved noshi to regenerate the image. Upgrade to also store the finished image."
   sign_in: "Sign in"
   sign_up: "Sign up"

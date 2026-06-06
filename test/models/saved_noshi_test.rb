@@ -4,13 +4,14 @@ class SavedNoshiTest < ActiveSupport::TestCase
   test "sanitized_settings keeps only known keys and caps names at 5" do
     raw = {
       "paper_size" => "A4", "ntype" => "3", "omotegaki" => "御祝",
-      "omotegaki_size" => "120", "font_size" => "100",
+      "omotegaki_size" => "120", "font_size" => "100", "background_id" => "42",
       "names" => %w[a b c d e f g], "evil" => "drop tables"
     }
     settings = SavedNoshi.sanitized_settings(raw)
 
     assert_equal SavedNoshi::SETTING_KEYS.sort, settings.keys.sort
     assert_equal 5, settings["names"].length
+    assert_equal "42", settings["background_id"]
     assert_not settings.key?("evil")
   end
 
