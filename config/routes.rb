@@ -7,6 +7,17 @@ Rails.application.routes.draw do
   # Stripe posts here server-to-server; keep it locale-independent.
   post "stripe/webhook", to: "billing#webhook"
 
+  # Public, locale-independent JSON API for AI agents and integrations.
+  namespace :api do
+    namespace :v1 do
+      get "/",           to: "service#show"
+      get "omotegaki",   to: "omotegaki#index"
+      get "designs",     to: "designs#index"
+      get "backgrounds", to: "backgrounds#index"
+      get "noshi",       to: "noshis#show"
+    end
+  end
+
   scope "(/:locale)", locale: /en|ja/ do
     root "noshis#index"
 

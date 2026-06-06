@@ -1,5 +1,46 @@
-# See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+# robots.txt — Noshi (熨斗) generator  https://noshi.moab.jp
+# AI agents and crawlers are welcome here.
+#   Machine-readable overview: https://noshi.moab.jp/llms.txt
+#   Public JSON API:           https://noshi.moab.jp/api/v1
+# See https://www.robotstxt.org/robotstxt.html for the format.
+
 User-agent: *
+Allow: /
+# Account-only areas (these just redirect to sign-in for crawlers):
+Disallow: /auth/
+Disallow: /saved_noshis
+Disallow: /billing
+Disallow: /admin/
+
+# Explicitly welcome major AI crawlers/agents.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
 Allow: /
 
 Sitemap: https://noshi.moab.jp/sitemap.xml

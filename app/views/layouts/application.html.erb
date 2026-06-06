@@ -13,6 +13,24 @@
     <meta property="og:description" content="Free bilingual tool to generate noshi (熨斗) for Japanese gift envelopes. Download a print-ready JPEG in seconds.">
     <meta property="og:url" content="https://noshi.moab.jp">
 
+    <!-- AI agents & crawlers: machine-readable overview and JSON API -->
+    <link rel="alternate" type="text/markdown" title="LLM overview" href="/llms.txt">
+    <link rel="alternate" type="application/json" title="Noshi JSON API" href="/api/v1">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Noshi 熨斗",
+        "url": "https://noshi.moab.jp",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web",
+        "inLanguage": ["ja", "en"],
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+        "description": "Free bilingual tool to generate noshi (熨斗) — the decorative bands printed on Japanese gift envelopes. Includes a public JSON API at /api/v1."
+      }
+    </script>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
