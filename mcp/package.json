@@ -1,0 +1,22 @@
+{
+  "name": "noshi-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for the Noshi (熨斗) Japanese gift-envelope generator API.",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "noshi-mcp": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test test/mcp.test.js"
+  },
+  "keywords": ["mcp", "noshi", "japanese", "gift", "ai-agent"],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

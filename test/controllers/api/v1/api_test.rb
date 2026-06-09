@@ -75,4 +75,63 @@ class Api::V1::ApiTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_not_includes json["editor_url"], "/noshis/new/"
   end
+
+  # ── OpenAPI spec ────────────────────────────────────────────────────────────
+
+  test "openapi.json returns a valid OpenAPI 3.0.3 document" do
+    get "/api/v1/openapi.json"
+    assert_response :success
+    assert_equal "application/json", @response.media_type
+    assert_equal "*", @response.headers["Access-Control-Allow-Origin"]
+    assert_equal "3.0.3", json["openapi"]
+    assert_equal "1", json.dig("info", "version")
+    assert json.dig("info", "title").present?
+  end
+
+  test "openapi.json paths cover all five endpoints" do
+    get "/api/v1/openapi.json"
+    assert_response :success
+    paths = json["paths"].keys
+    assert_includes paths, "/"
+    assert_includes paths, "/omotegaki"
+    assert_includes paths, "/designs"
+    assert_includes paths, "/backgrounds"
+    assert_includes paths, "/noshi"
+  end
+
+  test "openapi.json components define all expected schemas" do
+    get "/api/v1/openapi.json"
+    assert_response :success
+    schemas = json.dig("components", "schemas").keys
+    assert_includes schemas, "ServiceManifest"
+    assert_includes schemas, "OmotegakiList"
+    assert_includes schemas, "DesignCatalog"
+    assert_includes schemas, "BackgroundList"
+    assert_includes schemas, "NoshiComposition"
+  end
+
+  test "openapi.json compose endpoint documents paper_size enum matching catalog" do
+    get "/api/v1/openapi.json"
+    assert_response :success
+    paper_size_param = json.dig("paths", "/noshi", "get", "parameters")
+                           .find { |p| p["name"] == "paper_size" }
+    assert paper_size_param.present?, "paper_size parameter missing from /noshi"
+    assert_equal NoshiCatalog::PAPER_SIZES, paper_size_param.dig("schema", "enum")
+  end
+
+  test "openapi.json ntype parameter maximum matches catalog" do
+    get "/api/v1/openapi.json"
+    assert_response :success
+    ntype_param = json.dig("paths", "/noshi", "get", "parameters")
+                      .find { |p| p["name"] == "ntype" }
+    assert ntype_param.present?, "ntype parameter missing from /noshi"
+    assert_equal NoshiCatalog::BUILTIN_DESIGN_COUNT, ntype_param.dig("schema", "maximum")
+  end
+
+  test "service manifest includes openapi endpoint reference" do
+    get "/api/v1"
+    assert_response :success
+    assert json.dig("endpoints", "openapi").present?, "openapi key missing from service manifest"
+    assert_includes json.dig("endpoints", "openapi"), "openapi.json"
+  end
 end

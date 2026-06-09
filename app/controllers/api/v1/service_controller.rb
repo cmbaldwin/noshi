@@ -26,7 +26,8 @@ module Api
             occasions: "#{api}/omotegaki",
             designs: "#{api}/designs",
             backgrounds: "#{api}/backgrounds",
-            compose: "#{api}/noshi?omotegaki={occasion}&names={name1,name2}&paper_size={B5|A4|縦B5|縦A4}&ntype={1-#{NoshiCatalog::BUILTIN_DESIGN_COUNT}}"
+            compose: "#{api}/noshi?omotegaki={occasion}&names={name1,name2}&paper_size={B5|A4|縦B5|縦A4}&ntype={1-#{NoshiCatalog::BUILTIN_DESIGN_COUNT}}",
+            openapi: "#{api}/openapi.json"
           }
         }
       end

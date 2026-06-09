@@ -10,11 +10,12 @@ Rails.application.routes.draw do
   # Public, locale-independent JSON API for AI agents and integrations.
   namespace :api do
     namespace :v1 do
-      get "/",           to: "service#show"
-      get "omotegaki",   to: "omotegaki#index"
-      get "designs",     to: "designs#index"
-      get "backgrounds", to: "backgrounds#index"
-      get "noshi",       to: "noshis#show"
+      get "/",            to: "service#show"
+      get "omotegaki",    to: "omotegaki#index"
+      get "designs",      to: "designs#index"
+      get "backgrounds",  to: "backgrounds#index"
+      get "noshi",        to: "noshis#show"
+      get "openapi.json", to: "open_api#show", as: :openapi
     end
   end
 
