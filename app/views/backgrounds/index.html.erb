@@ -1,0 +1,49 @@
+<div class="container mx-auto">
+  <div class="flex flex-wrap items-center justify-between mt-4 mb-3 gap-2">
+    <h1 class="text-xl lg:text-2xl font-semibold"><%= t('background.gallery_title') %></h1>
+    <div class="flex items-center gap-2 text-sm">
+      <%= link_to t('background.sort_top'), backgrounds_path,
+            class: "px-3 py-1 rounded border #{'bg-sky-200' unless params[:sort] == 'new'}" %>
+      <%= link_to t('background.sort_new'), backgrounds_path(sort: "new"),
+            class: "px-3 py-1 rounded border #{'bg-sky-200' if params[:sort] == 'new'}" %>
+      <% if user_signed_in? %>
+        <%= link_to t('background.upload'), new_background_path,
+              class: "px-3 py-1 rounded border bg-lime-300 hover:bg-lime-400" %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @backgrounds.empty? %>
+    <p class="text-slate-500 p-6 text-center border border-dashed rounded">
+      <%= t('background.gallery_empty') %>
+    </p>
+  <% else %>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <% @backgrounds.each do |bg| %>
+        <div class="border border-slate-200 rounded p-3 flex flex-col">
+          <div class="bg-slate-50 rounded mb-2 h-44 flex items-center justify-center overflow-hidden">
+            <%= image_tag bg.image.variant(resize_to_limit: [400, 400]),
+                  alt: bg.title, class: "max-h-44 w-auto object-contain" %>
+          </div>
+          <div class="font-medium truncate"><%= bg.title %></div>
+          <div class="text-xs text-slate-500 mb-1">
+            <%= t("background.orientation_#{bg.orientation}") %> ·
+            <span title="<%= t('background.average_rating') %>">★ <%= bg.average_rating %></span>
+            <span class="text-slate-400">(<%= bg.ratings_count %>)</span>
+          </div>
+          <% if user_signed_in? %>
+            <div class="flex gap-1 mt-auto pt-2" aria-label="<%= t('background.rate') %>">
+              <% (1..5).each do |v| %>
+                <%= button_to "★", rate_background_path(bg, value: v), method: :post,
+                      form_class: "inline",
+                      class: "text-lg leading-none #{(@my_ratings[bg.id].to_i >= v) ? 'text-yellow-500' : 'text-slate-300 hover:text-yellow-400'}" %>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-xs text-slate-400 mt-auto pt-2"><%= t('background.sign_in_to_rate') %></p>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

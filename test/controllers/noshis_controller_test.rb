@@ -13,6 +13,19 @@ class NoshisControllerTest < ActionDispatch::IntegrationTest
     assert_select "form#new_noshi"
   end
 
+  test "approved community backgrounds appear in the design picker" do
+    user = User.create!(provider: "google_oauth2", uid: "pick1", email: "pick@x.com")
+    bg = user.backgrounds.build(title: "Community BG", orientation: "landscape", status: "approved")
+    bg.image.attach(io: File.open(Rails.root.join("test/fixtures/files/sample.png")),
+                    filename: "sample.png", content_type: "image/png")
+    bg.save!
+
+    get "/"
+    assert_response :success
+    # Indexed after the 21 built-ins (0..20), so the first upload is id 21.
+    assert_select "#list-noshi-21"
+  end
+
   test "GET /en renders the noshi form in English" do
     get "/en"
     assert_response :success

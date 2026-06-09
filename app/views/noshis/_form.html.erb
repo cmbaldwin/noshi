@@ -89,12 +89,28 @@
               <% noshi_thumb = asset_path("noshi/thumbs/noshi#{n + 1}-thumb.jpg") %>
               <% noshi_img = asset_path("noshi/noshi#{n + 1}.jpg") %>
               <% n_class = base_class + "#{' d-none' unless n < 14}#{' bg-sky-500' if n == ntype}#{n < 14 ? ' landscape-noshi' : ' portrait-noshi'}" %>
-              <div 
-                class="<%= n_class %>" 
-                style="background-image: url(<%= noshi_thumb %>)" 
-                id="list-noshi-<%= n %>" 
-                href="" data-noshi-id="<%= n %>" 
+              <div
+                class="<%= n_class %>"
+                style="background-image: url(<%= noshi_thumb %>)"
+                id="list-noshi-<%= n %>"
+                href="" data-noshi-id="<%= n %>"
                 data-full-noshi-url="<%= noshi_img %>">
+              </div>
+            <% end %>
+            <%# Approved community uploads, indexed after the 21 built-ins so the
+                fixed indices above stay stable. Orientation drives the
+                landscape/portrait filtering the preview already does. %>
+            <% Array(@community_backgrounds).each_with_index do |bg, i| %>
+              <% cid = 21 + i %>
+              <% orientation_class = bg.orientation == "portrait" ? "portrait-noshi hidden" : "landscape-noshi" %>
+              <div
+                class="<%= base_class %> <%= orientation_class %><%= ' bg-sky-500' if cid == ntype %>"
+                style="background-image: url(<%= url_for(bg.image.variant(resize_to_limit: [240, 240])) %>)"
+                id="list-noshi-<%= cid %>"
+                href="" data-noshi-id="<%= cid %>"
+                data-background-id="<%= bg.id %>"
+                title="<%= bg.title %>"
+                data-full-noshi-url="<%= url_for(bg.image) %>">
               </div>
             <% end %>
           </div>
@@ -176,11 +192,23 @@
           </div>
         </div>
         <%# f.submit t('create_and_save'), id: 'noshi_submit', class: 'disabled hidden rounded border border-slate-100 cursor-default text-slate-400 text-xl font-bold py-2 px-4 my-2 bg-lime-100 mt-2', 'disabled' => 'disabled', 'data-processing' => t('noshi_processing') %>
-        <%= f.submit t('create'), 
-                     id: 'create_now', 
-                     class: 'rounded border border-slate-100 hover:border-sky-300 hover:border-dashed active:border-solid cursor-pointer text-xl font-bold py-2 px-4 my-2 bg-lime-300 mt-2', 
-                     'data-disable-with' => t('noshi_processing'), 
+        <%= f.submit t('create'),
+                     id: 'create_now',
+                     class: 'rounded border border-slate-100 hover:border-sky-300 hover:border-dashed active:border-solid cursor-pointer text-xl font-bold py-2 px-4 my-2 bg-lime-300 mt-2',
+                     'data-disable-with' => t('noshi_processing'),
                      'data-action' => "click->noshi#createImage" %>
+        <% if user_signed_in? %>
+          <button type="button"
+                  id="save_noshi"
+                  class="rounded border border-slate-100 hover:border-sky-300 hover:border-dashed active:border-solid cursor-pointer text-xl font-bold py-2 px-4 my-2 bg-sky-200 mt-2"
+                  data-action="click->noshi#saveNoshi"
+                  data-saved-url="<%= saved_noshis_path %>"
+                  data-saved-redirect="true">
+            <%= t('saved_noshi.save_button') %>
+          </button>
+        <% else %>
+          <p class="text-xs text-slate-500 mt-2"><%= t('saved_noshi.sign_in_to_save') %></p>
+        <% end %>
       </div>
     </div>
   </div>

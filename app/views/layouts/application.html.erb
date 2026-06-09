@@ -13,6 +13,24 @@
     <meta property="og:description" content="Free bilingual tool to generate noshi (熨斗) for Japanese gift envelopes. Download a print-ready JPEG in seconds.">
     <meta property="og:url" content="https://noshi.moab.jp">
 
+    <!-- AI agents & crawlers: machine-readable overview and JSON API -->
+    <link rel="alternate" type="text/markdown" title="LLM overview" href="/llms.txt">
+    <link rel="alternate" type="application/json" title="Noshi JSON API" href="/api/v1">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Noshi 熨斗",
+        "url": "https://noshi.moab.jp",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web",
+        "inLanguage": ["ja", "en"],
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+        "description": "Free bilingual tool to generate noshi (熨斗) — the decorative bands printed on Japanese gift envelopes. Includes a public JSON API at /api/v1."
+      }
+    </script>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -49,8 +67,10 @@
       </div>
       <div data-nav-target="mobileNav" class="w-full lg:w-auto block lg:grow lg:flex items-start lg:items-center hidden lg:flex">
         <div class="grow text-lg lg:text-xl">
+          <%= link_to t('background.gallery_title'), backgrounds_path,
+                class: "text-white hover:text-teal-600 text-base lg:text-lg ml-1 lg:ml-0" %>
         </div>
-        <div class="text-left lg:text-right flex">
+        <div class="text-left lg:text-right flex items-center">
           <%= form_with(scope: "set_locale") do |f| %>
             <%= f.select :locale, options_for_select(
                   I18n.available_locales.map { |l| [l.to_s.humanize, l.to_s] },
@@ -58,6 +78,7 @@
                 ), {}, class: 'locale-select ml-2 inline-block text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 mt-2 lg:mt-0'
               %>
           <% end %>
+          <%= render "layouts/user_menu" %>
         </div>
       </div>
     </nav>

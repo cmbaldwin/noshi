@@ -34,4 +34,12 @@
     <priority>0.5</priority>
   </url>
 
+  <url>
+    <loc>https://noshi.moab.jp/backgrounds</loc>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://noshi.moab.jp/ja/backgrounds"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://noshi.moab.jp/en/backgrounds"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

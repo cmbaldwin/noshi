@@ -1,0 +1,31 @@
+<div class="container mx-auto">
+  <h1 class="text-xl lg:text-2xl font-semibold mt-4 mb-3"><%= t('background.moderation_title') %></h1>
+
+  <% if @backgrounds.empty? %>
+    <p class="text-slate-500 p-6 text-center border border-dashed rounded">
+      <%= t('background.nothing_pending') %>
+    </p>
+  <% else %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <% @backgrounds.each do |bg| %>
+        <div class="border border-slate-200 rounded p-3 flex flex-col">
+          <div class="bg-slate-50 rounded mb-2 h-48 flex items-center justify-center overflow-hidden">
+            <%= image_tag bg.image.variant(resize_to_limit: [500, 500]), alt: bg.title,
+                  class: "max-h-48 w-auto object-contain" %>
+          </div>
+          <div class="font-medium truncate"><%= bg.title %></div>
+          <div class="text-xs text-slate-500"><%= bg.user.display_name %> · <%= t("background.orientation_#{bg.orientation}") %></div>
+          <% if bg.description.present? %>
+            <p class="text-xs text-slate-600 mt-1"><%= bg.description %></p>
+          <% end %>
+          <div class="flex gap-2 mt-3">
+            <%= button_to t('background.approve'), admin_background_path(bg, status: "approved"), method: :patch,
+                  class: "text-sm border rounded px-3 py-1 bg-green-200 hover:bg-green-300" %>
+            <%= button_to t('background.reject'), admin_background_path(bg, status: "rejected"), method: :patch,
+                  class: "text-sm border rounded px-3 py-1 bg-red-100 hover:bg-red-200 text-red-700" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

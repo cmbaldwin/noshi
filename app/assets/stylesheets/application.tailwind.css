@@ -5,6 +5,13 @@
   img {
     @apply inline-block;
   }
+
+  /* Draggable preview text: stop touch devices from treating the vertical drag
+     gesture as a page scroll/zoom so pointer dragging works on mobile. */
+  .preview_omotegaki_span,
+  .preview_names {
+    touch-action: none;
+  }
 }
 
 @tailwind components;

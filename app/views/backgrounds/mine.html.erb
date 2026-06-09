@@ -1,0 +1,36 @@
+<div class="container mx-auto">
+  <div class="flex items-center justify-between mt-4 mb-3">
+    <h1 class="text-xl lg:text-2xl font-semibold"><%= t('background.my_uploads') %></h1>
+    <%= link_to t('background.upload'), new_background_path,
+          class: "text-sm rounded border px-3 py-2 bg-lime-300 hover:bg-lime-400" %>
+  </div>
+
+  <% if @backgrounds.empty? %>
+    <p class="text-slate-500 p-6 text-center border border-dashed rounded">
+      <%= t('background.no_uploads') %>
+    </p>
+  <% else %>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <% @backgrounds.each do |bg| %>
+        <div class="border border-slate-200 rounded p-3 flex flex-col">
+          <div class="bg-slate-50 rounded mb-2 h-40 flex items-center justify-center overflow-hidden">
+            <%= image_tag bg.image.variant(resize_to_limit: [400, 400]), alt: bg.title,
+                  class: "max-h-40 w-auto object-contain" %>
+          </div>
+          <div class="font-medium truncate"><%= bg.title %></div>
+          <div class="text-xs mt-1">
+            <span class="inline-block rounded px-2 py-0.5
+              <%= { 'approved' => 'bg-green-100 text-green-700',
+                    'pending'  => 'bg-yellow-100 text-yellow-700',
+                    'rejected' => 'bg-red-100 text-red-700' }[bg.status] %>">
+              <%= t("background.status_#{bg.status}") %>
+            </span>
+          </div>
+          <%= button_to t('background.delete'), background_path(bg), method: :delete,
+                form: { data: { turbo_confirm: t('background.delete_confirm') } },
+                class: "text-sm border rounded px-3 py-1 bg-white hover:bg-slate-100 text-slate-600 mt-3" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

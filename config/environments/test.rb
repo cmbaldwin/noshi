@@ -18,5 +18,9 @@ Rails.application.configure do
   config.active_support.disallowed_deprecation = :raise
   config.active_support.disallowed_deprecation_warnings = []
 
+  config.active_storage.service = :test
+  config.action_mailer.default_url_options = { host: "www.example.com" }
+  config.action_mailer.delivery_method = :test
+
   config.action_controller.raise_on_missing_callback_actions = true
 end

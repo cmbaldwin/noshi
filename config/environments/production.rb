@@ -18,6 +18,15 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
   config.cache_store = :memory_store
 
+  # Files stored on the persistent volume (see config/storage.yml).
+  config.active_storage.service = :local
+
+  # OAuth is the only auth path, so no transactional email is sent today; these
+  # keep ActionMailer/URL helpers safe to load.
+  config.action_mailer.default_url_options = { host: "noshi.moab.jp", protocol: "https" }
+  config.action_mailer.perform_deliveries = false
+  config.action_mailer.raise_delivery_errors = false
+
   config.i18n.fallbacks = true
   config.active_support.report_deprecations = false
 end

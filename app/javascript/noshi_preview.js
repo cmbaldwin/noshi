@@ -488,47 +488,34 @@ export default class NoshiPreview {
   _dragListener() {
     const omotegakiEl = document.querySelector(".preview_omotegaki_span");
     const namesEl = document.querySelector(".preview_names");
-    const previewAreaBounds = this._previewArea.getBoundingClientRect();
 
-    function touchHandler(event) {
-      var touch = event.changedTouches[0];
-      var simulatedEvent = new MouseEvent(
-        {
-          touchstart: "mousedown",
-          touchmove: "mousemove",
-          touchend: "mouseup",
-        }[event.type],
-        true,
-        true,
-        window,
-        1,
-        touch.screenX,
-        touch.screenY,
-        touch.clientX,
-        touch.clientY,
-        false,
-        false,
-        false,
-        false,
-        0,
-        null
-      );
-      touch.target.dispatchEvent(simulatedEvent);
-    }
-
-    document.addEventListener("touchstart", touchHandler, true);
-    document.addEventListener("touchmove", touchHandler, true);
-    document.addEventListener("touchend", touchHandler, true);
-    document.addEventListener("touchcancel", touchHandler, true);
-
+    // Pointer Events unify mouse, touch, and pen, so a single code path drives
+    // dragging on desktop and mobile. (The previous touch->mouse shim built a
+    // MouseEvent with the legacy initMouseEvent positional signature, which the
+    // modern MouseEvent constructor ignores — so synthesized touches carried
+    // clientX/clientY = 0 and dragging silently did nothing on mobile.)
     [omotegakiEl, namesEl].forEach((el) => {
+      if (!el || el.dataset.dragBound) return;
+      el.dataset.dragBound = "1";
       const parentElement = el.parentElement;
+      // touch-action: none (keeping the browser from claiming the vertical
+      // gesture as a scroll/zoom on touch screens) is applied via a stylesheet
+      // rule, because the partial preview-update path rewrites these elements'
+      // inline style attribute wholesale and would wipe an inline value.
 
-      el.addEventListener("mousedown", (e) => {
-        const initMouseY = e.clientY;
+      el.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        // Keep receiving move/up events even if the finger or cursor drifts off
+        // the element mid-drag.
+        el.setPointerCapture?.(e.pointerId);
+
+        const initPointerY = e.clientY;
         const elBounds = el.getBoundingClientRect();
+        const previewAreaBounds = this._previewArea.getBoundingClientRect();
+
         const move = (ev) => {
-          const diff = ev.clientY - initMouseY;
+          ev.preventDefault();
+          const diff = ev.clientY - initPointerY;
           let margin;
           if (el === omotegakiEl) {
             margin = previewAreaBounds.top - elBounds.top + 1; // 1 for border
@@ -544,19 +531,22 @@ export default class NoshiPreview {
           }
           if (this._paperSize.includes("縦")) {
             ["names_shadow", "omotegaki_shadow"].forEach((els) => {
-              document.querySelectorAll(`.${els}`).forEach((el) => el.remove());
+              document.querySelectorAll(`.${els}`).forEach((node) => node.remove());
             });
             this._renderShadowing();
           }
         };
 
         const remove = () => {
-          document.removeEventListener("mousemove", move);
-          document.removeEventListener("mouseup", remove);
+          el.releasePointerCapture?.(e.pointerId);
+          el.removeEventListener("pointermove", move);
+          el.removeEventListener("pointerup", remove);
+          el.removeEventListener("pointercancel", remove);
         };
 
-        document.addEventListener("mousemove", move);
-        document.addEventListener("mouseup", remove);
+        el.addEventListener("pointermove", move);
+        el.addEventListener("pointerup", remove);
+        el.addEventListener("pointercancel", remove);
       });
     });
   }

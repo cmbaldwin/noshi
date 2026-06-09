@@ -1,0 +1,27 @@
+<div class="flex items-center gap-2 ml-2 mt-2 lg:mt-0">
+  <% if user_signed_in? %>
+    <% if current_user.avatar_url.present? %>
+      <%= image_tag current_user.avatar_url, alt: current_user.display_name,
+            class: "w-7 h-7 rounded-full border border-white", referrerpolicy: "no-referrer" %>
+    <% end %>
+    <span class="text-white text-sm hidden lg:inline"><%= current_user.display_name %></span>
+    <%= link_to t("saved_noshi.my_noshi"), saved_noshis_path,
+          class: "text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 px-2 py-1" %>
+    <%= link_to t("background.my_uploads"), mine_backgrounds_path,
+          class: "text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 px-2 py-1 hidden lg:inline-block" %>
+    <%= link_to t("billing.title"), billing_path,
+          class: "text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 px-2 py-1 hidden lg:inline-block" %>
+    <% if current_user.admin? %>
+      <%= link_to t("background.moderation_title"), admin_backgrounds_path,
+            class: "text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 px-2 py-1 hidden lg:inline-block" %>
+    <% end %>
+    <%= button_to t("auth.sign_out"), logout_path, method: :delete,
+          class: "text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 px-2 py-1" %>
+  <% else %>
+    <%# Full-page submit (data-turbo false): Turbo can't follow the cross-origin
+        redirect to Google. The POST carries the CSRF token omniauth requires. %>
+    <%= button_to t("auth.sign_in_google"), "/auth/google_oauth2", method: :post,
+          data: { turbo: false },
+          class: "flex items-center gap-1 text-sm leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white bg-sky-300 px-2 py-1" %>
+  <% end %>
+</div>
