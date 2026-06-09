@@ -30,19 +30,80 @@ Users fill in a few fields and download a print-ready JPEG:
 A read-only, CORS-open, no-auth API for AI agents and integrations.
 Base: `https://noshi.moab.jp/api/v1`
 
-- `GET /api/v1` — service manifest: capabilities + endpoint list
+- `GET /api/v1` — service manifest: capabilities + full endpoint map
 - `GET /api/v1/omotegaki` — selectable gift occasions (表書き)
 - `GET /api/v1/designs` — built-in designs + approved community backgrounds (each with an `ntype`)
 - `GET /api/v1/backgrounds` — approved community backgrounds with ratings (`?sort=new` for newest)
 - `GET /api/v1/noshi?omotegaki={occasion}&names={name1,name2}&paper_size={B5|A4|縦B5|縦A4}&ntype={1-21}`
   — normalizes the inputs and returns a deep link (`editor_url`) to the in-browser
   editor where the JPEG is generated.
+- `GET /api/v1/openapi.json` — full OpenAPI 3.0.3 specification (machine-readable)
 
-Example:
+### OpenAPI specification
+
+The complete machine-readable API contract is available at:
+`https://noshi.moab.jp/api/v1/openapi.json`
+
+It describes all endpoints, parameters, response schemas, and examples in
+OpenAPI 3.0.3 format. Import it into Swagger UI, Postman, code generators, or
+any AI tool framework that consumes OpenAPI.
+
+### API example
 
 ```
 GET https://noshi.moab.jp/api/v1/noshi?omotegaki=御祝&names=田中,鈴木&paper_size=A4&ntype=3
-→ { "spec": { ... }, "editor_url": "https://noshi.moab.jp/noshis/new/3/田中,鈴木/御祝", ... }
+→ {
+    "spec": { "omotegaki": "御祝", "names": ["田中","鈴木"], "paper_size": "A4", "ntype": 3, "orientation": "landscape" },
+    "editor_url": "https://noshi.moab.jp/noshis/new/3/田中,鈴木/御祝",
+    "instructions": "Open editor_url in a browser to preview, fine-tune, and download the print-ready JPEG.",
+    "download": "In the editor, press 作成 / Create to download the JPEG."
+  }
+```
+
+### Recommended agent workflow
+
+```
+1. GET /api/v1           → Understand capabilities and discover all endpoints
+2. GET /api/v1/omotegaki → Get the list of occasion labels to present to the user
+3. GET /api/v1/designs   → Get available designs (ntype values) with thumbnail URLs
+4. GET /api/v1/noshi     → Compose spec; receive editor_url
+5. Share editor_url      → User opens in browser and downloads the JPEG
+```
+
+## MCP server
+
+For AI agents that use the Model Context Protocol (MCP), a ready-made MCP server
+wraps the API as five tools:
+
+- **get_service_info** — retrieve API metadata and endpoint map
+- **list_occasions** — list all selectable omotegaki labels
+- **list_designs** — list built-in and community designs
+- **list_backgrounds** — browse community backgrounds with ratings
+- **compose_noshi** — compose a spec and get an editor deep link
+
+**Source:** `mcp/` directory of the repository.
+
+**npm install:**
+```bash
+cd mcp && npm install
+node mcp/index.js   # runs via stdio (MCP standard transport)
+```
+
+**Claude Desktop configuration** (`~/.claude/claude_desktop_config.json`):
+```json
+{
+  "mcpServers": {
+    "noshi": {
+      "command": "node",
+      "args": ["/absolute/path/to/noshi/mcp/index.js"]
+    }
+  }
+}
+```
+
+**Environment variable:**
+```
+NOSHI_API_BASE_URL=http://localhost:3000/api/v1   # override for local dev / testing
 ```
 
 ## Deep-link to a pre-filled noshi
@@ -54,6 +115,12 @@ https://noshi.moab.jp/noshis/new/{ntype}/{names}/{omotegaki}
 ```
 
 Example: `https://noshi.moab.jp/noshis/new/1/田中/御祝`
+
+## Documentation
+
+- **API reference:** `docs/api.md` in the repository (or https://noshi.moab.jp/docs/api.md)
+- **OpenAPI spec:** `https://noshi.moab.jp/api/v1/openapi.json`
+- **MCP server:** `mcp/README.md` in the repository
 
 ## Pages
 

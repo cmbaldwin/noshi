@@ -352,6 +352,7 @@ PLATFORMS
   arm-linux
   arm-linux-gnu
   arm-linux-musl
+  arm64-darwin-23
   arm64-darwin-25
   x86_64-linux
   x86_64-linux-gnu
