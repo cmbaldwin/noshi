@@ -21,9 +21,13 @@
       <%= button_to t('billing.manage'), billing_portal_path, method: :post,
             class: "border rounded px-4 py-2 bg-white hover:bg-slate-100" %>
     <% elsif @configured %>
-      <%= button_to t('billing.upgrade_cta'), billing_checkout_path, method: :post,
-            data: { turbo: false },
-            class: "border rounded px-4 py-2 bg-sky-300 hover:bg-sky-400 font-medium" %>
+      <div class="flex flex-wrap gap-2">
+        <% @plans.each do |plan| %>
+          <%= button_to t("billing.upgrade_#{plan}"), billing_checkout_path,
+                method: :post, params: { plan: plan }, data: { turbo: false },
+                class: "border rounded px-4 py-2 bg-sky-300 hover:bg-sky-400 font-medium" %>
+        <% end %>
+      </div>
     <% else %>
       <p class="text-slate-500 text-sm"><%= t('billing.unavailable') %></p>
     <% end %>

@@ -6,16 +6,18 @@ class BillingController < ApplicationController
   def show
     @subscription = current_user.subscription
     @configured = Billing.configured?
+    @plans = Billing.available_plans
   end
 
-  # Start a Stripe Checkout subscription session.
+  # Start a Stripe Checkout subscription session for the chosen plan.
   def checkout
-    return redirect_to billing_path, alert: t("billing.unavailable") unless Billing.configured?
+    price_id = Billing.price_id(params[:plan] || "monthly")
+    return redirect_to billing_path, alert: t("billing.unavailable") unless price_id
 
     session = Stripe::Checkout::Session.create(
       mode: "subscription",
       customer: ensure_stripe_customer,
-      line_items: [{ price: ENV["STRIPE_PRICE_ID"], quantity: 1 }],
+      line_items: [{ price: price_id, quantity: 1 }],
       success_url: billing_url(status: "success"),
       cancel_url: billing_url(status: "cancel"),
       client_reference_id: current_user.id
