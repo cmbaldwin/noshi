@@ -78,6 +78,7 @@ en:
     plan_paid: "Image storage"
     plan_paid_desc: "Everything in Free, plus we store the finished, print-ready image with each saved noshi."
     current_plan: "Your current plan"
+    upgrade_cta: "Upgrade"
     upgrade_monthly: "¥300 / month"
     upgrade_yearly: "¥2,000 / year"
     manage: "Manage subscription"

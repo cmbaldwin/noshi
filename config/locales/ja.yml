@@ -47,6 +47,7 @@ ja:
     plan_paid: "画像保存"
     plan_paid_desc: "無料プランのすべてに加え、保存した熨斗ごとに完成した印刷用画像を保存します。"
     current_plan: "現在のプラン"
+    upgrade_cta: "アップグレード"
     upgrade_monthly: "月額 ¥300"
     upgrade_yearly: "年額 ¥2,000"
     manage: "サブスクリプションを管理"
