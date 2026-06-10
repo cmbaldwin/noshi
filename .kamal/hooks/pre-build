@@ -19,3 +19,10 @@ fi
 
 echo "pre-build: running Ruby tests + browser JS smoke test..."
 bin/rails prebuild
+
+# Verify the configured Stripe price ids are real, active, recurring prices —
+# a separate process so it runs in the development environment (loading
+# .env.development), catching a bad price id (e.g. a prod_… product id) before
+# the image is built. No-op when Stripe isn't configured.
+echo "pre-build: verifying Stripe price configuration..."
+bin/rails stripe:verify

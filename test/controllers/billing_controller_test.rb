@@ -33,11 +33,19 @@ class BillingControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "checkout degrades gracefully when Stripe is unconfigured" do
+    # Make the test deterministic regardless of any Stripe env the developer has
+    # set (e.g. .env.development) — checkout must not reach the Stripe API here.
+    keys = %w[STRIPE_SECRET_KEY STRIPE_MONTHLY_PRICE_ID STRIPE_YEARLY_PRICE_ID]
+    original = ENV.to_h.slice(*keys)
+    keys.each { |k| ENV.delete(k) }
+
     sign_in_as(create_user)
     post billing_checkout_path, params: { plan: "monthly" }
     assert_redirected_to billing_path
     follow_redirect!
     assert_match I18n.t("billing.unavailable"), @response.body
+  ensure
+    original.each { |k, v| ENV[k] = v }
   end
 
   test "webhook upserts a subscription from an event payload" do

@@ -37,6 +37,8 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 .env
+.env.*
+!.env.example
 session-history/
 # Node deps (only used for the dev-only JS smoke test and MCP server; importmap app needs no bundler)
 /node_modules
