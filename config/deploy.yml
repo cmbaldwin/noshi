@@ -51,6 +51,11 @@ env:
 
 builder:
   arch: amd64
+  # Escalante (Colima) remote builder — shared for all Kamal apps.
+  # Laptop needs Docker CLI; Escalante needs Colima running.
+  # Docs: ~/Dev/escalante-workspace/docs/KAMAL_REMOTE_BUILDER.md
+  # If deploy runs ON Escalante, remote still works via SSH-to-self.
+  remote: ssh://escalante@escalante-ts
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"

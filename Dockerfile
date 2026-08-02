@@ -26,6 +26,12 @@ ENV RAILS_ENV="production" \
 # Build stage — gems + asset precompile, discarded from final image
 FROM base AS build
 
+# Serialize native gem compiles under Rosetta/amd64 on Escalante (8GB host).
+# Parallel make + jemalloc LD_PRELOAD often OOMs or fails nio4r/libev.
+ENV MAKEFLAGS="-j1" \
+    BUNDLE_JOBS="1" \
+    LD_PRELOAD=""
+
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
@@ -33,11 +39,11 @@ RUN apt-get update -qq && \
 COPY Gemfile Gemfile.lock .ruby-version ./
 RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
+    bundle exec bootsnap precompile -j 1 --gemfile
 
 COPY . .
 
-RUN bundle exec bootsnap precompile app/ lib/
+RUN bundle exec bootsnap precompile -j 1 app/ lib/
 
 # Precompile assets without needing the real RAILS_MASTER_KEY (tailwindcss-rails
 # hooks tailwind build into assets:precompile)
