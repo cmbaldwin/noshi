@@ -31,7 +31,7 @@ No account needed. Nothing is saved. The noshi is generated entirely in your bro
 
 ```bash
 bin/setup   # install gems
-bin/dev     # start local server (localhost:3000)
+bin/dev     # start local server (https://noshi.localhost)
 bin/rails test
 ```
 
