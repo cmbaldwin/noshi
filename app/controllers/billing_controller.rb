@@ -68,9 +68,12 @@ class BillingController < ApplicationController
     secret = ENV["STRIPE_WEBHOOK_SECRET"]
     if secret.present?
       Stripe::Webhook.construct_event(payload, signature, secret)
-    else
-      # No secret configured (e.g. local/dev): accept unverified for convenience.
+    elsif Rails.env.local?
+      # development/test convenience only — never accept unsigned events in prod.
       Stripe::Event.construct_from(JSON.parse(payload, symbolize_names: true))
+    else
+      Rails.logger.error("STRIPE_WEBHOOK_SECRET missing; rejecting webhook")
+      nil
     end
   rescue JSON::ParserError, Stripe::SignatureVerificationError => e
     Rails.logger.warn("Stripe webhook rejected: #{e.message}")
