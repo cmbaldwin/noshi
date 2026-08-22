@@ -30,6 +30,8 @@ gem "thruster", require: false
 gem "dotenv-rails", groups: %i[development test]
 
 group :development do
+  gem "rb-portless", require: "portless/rails"
+
   gem "kamal", require: false
   gem "web-console"
 end

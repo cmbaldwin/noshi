@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Named HTTPS URL via rb-portless (https://<name>.localhost). PORTLESS=0 skips.
+if [ -z "${PORTLESS_URL:-}" ] && [ "${PORTLESS:-}" != "0" ]; then
+  exec bundle exec rb-portless run "$0" "$@"
+fi
+
 if ! command -v foreman &> /dev/null
 then
   echo "Installing foreman..."
