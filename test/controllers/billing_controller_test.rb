@@ -77,13 +77,13 @@ class BillingControllerTest < ActionDispatch::IntegrationTest
   test "production rejects unsigned webhooks when STRIPE_WEBHOOK_SECRET is missing" do
     old = ENV["STRIPE_WEBHOOK_SECRET"]
     ENV.delete("STRIPE_WEBHOOK_SECRET")
-    Rails.stub :env, ActiveSupport::EnvironmentInquirer.new("production") do
-      post "/stripe/webhook",
-           params: { type: "customer.subscription.created", data: { object: {} } }.to_json,
-           headers: { "CONTENT_TYPE" => "application/json" }
-      assert_response :bad_request
-    end
+    Rails.env = "production"
+    post "/stripe/webhook",
+         params: { type: "customer.subscription.created", data: { object: {} } }.to_json,
+         headers: { "CONTENT_TYPE" => "application/json" }
+    assert_response :bad_request
   ensure
+    Rails.env = "test"
     ENV["STRIPE_WEBHOOK_SECRET"] = old
   end
 end
