@@ -49,8 +49,14 @@ env:
     # config/puma.rb defaults to 4 workers; the shared host has 2 cores.
     WEB_CONCURRENCY: 1
 
+# Builds run locally with Docker on this machine. This host is arm64 and the
+# servers are amd64, so buildx cross-builds via emulation.
 builder:
   arch: amd64
+  # Docker 29 buildx attaches provenance/SBOM attestations by default and the
+  # private ECR registry 403s on those blobs. Keep both off.
+  provenance: false
+  sbom: false
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"
