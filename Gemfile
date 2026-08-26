@@ -25,6 +25,7 @@ gem "stripe"
 
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "bootsnap", require: false
+gem "markdown_for_agents", github: "cmbaldwin/markdown_for_agents", tag: "v0.1.1"
 gem "thruster", require: false
 
 gem "dotenv-rails", groups: %i[development test]
