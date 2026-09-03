@@ -13,7 +13,7 @@ module Api
           }
         end
 
-        community = Background.approved.with_attached_image.top_rated.map { |bg| background_json(bg) }
+        community = Background.approved.with_attached_image.includes(:user).top_rated.map { |bg| background_json(bg) }
 
         render json: { builtin: builtin, community: community }
       end
