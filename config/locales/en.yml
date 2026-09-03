@@ -37,6 +37,7 @@ en:
     signed_out: "Signed out."
     sign_in_failed: "Sign-in failed. Please try again."
     login_required: "Please sign in to continue."
+    admin_required: "This page is for administrators only."
   background:
     gallery_title: "Backgrounds"
     gallery_empty: "No community backgrounds yet. Be the first to upload one!"

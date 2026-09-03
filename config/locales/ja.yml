@@ -6,6 +6,7 @@ ja:
     signed_out: "ログアウトしました。"
     sign_in_failed: "ログインに失敗しました。もう一度お試しください。"
     login_required: "続行するにはログインしてください。"
+    admin_required: "このページは管理者のみ利用できます。"
   background:
     gallery_title: "背景"
     gallery_empty: "コミュニティの背景はまだありません。最初の投稿者になりましょう！"

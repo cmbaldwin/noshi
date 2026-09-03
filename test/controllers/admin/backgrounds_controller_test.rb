@@ -15,6 +15,19 @@ class Admin::BackgroundsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
+  test "signed-in non-admin sees the admin-only message" do
+    sign_in_as(create_user)
+    get admin_backgrounds_path
+    assert_redirected_to root_path
+    assert_equal I18n.t("auth.admin_required"), flash[:alert]
+  end
+
+  test "guest sees the sign-in message" do
+    get admin_backgrounds_path
+    assert_redirected_to root_path
+    assert_equal I18n.t("auth.login_required"), flash[:alert]
+  end
+
   test "admin sees the pending queue" do
     sign_in_as(create_user(admin: true))
     pending_background
