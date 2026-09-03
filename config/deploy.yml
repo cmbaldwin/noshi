@@ -26,10 +26,10 @@ proxy:
     timeout: 30
 
 registry:
-  server: 047719641231.dkr.ecr.ap-southeast-2.amazonaws.com
-  username: AWS
+  server: escalante.tailabd61f.ts.net:5555
+  username: kamal
   password:
-  - AWS_ECR_PASSWORD
+    - KAMAL_REGISTRY_PASSWORD
 
 # Persistent storage for the SQLite database and ActiveStorage uploads
 # (saved noshi + community backgrounds). Survives deploys/restarts.
