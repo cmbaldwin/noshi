@@ -16,6 +16,9 @@ Rails.application.routes.draw do
       get "backgrounds",  to: "backgrounds#index"
       get "noshi",        to: "noshis#show"
       get "openapi.json", to: "open_api#show", as: :openapi
+      # Browsers preflight cross-origin API calls; answer those here so the
+      # CORS-open claim above holds for browser clients too.
+      match "*unmatched", to: "base#preflight", via: :options
     end
   end
 

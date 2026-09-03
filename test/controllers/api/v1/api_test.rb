@@ -157,4 +157,11 @@ class Api::V1::ApiTest < ActionDispatch::IntegrationTest
     assert_equal 3, json["count"]
     assert_equal 1, user_loads.size, "expected one preloaded users query, got #{user_loads.size}"
   end
+
+  test "OPTIONS preflight answers with CORS headers instead of 404" do
+    process(:options, "/api/v1/backgrounds")
+    assert_response :no_content
+    assert_equal "*", @response.headers["Access-Control-Allow-Origin"]
+    assert_equal "GET, OPTIONS", @response.headers["Access-Control-Allow-Methods"]
+  end
 end
