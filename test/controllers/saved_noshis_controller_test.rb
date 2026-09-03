@@ -36,6 +36,34 @@ class SavedNoshisControllerTest < ActionDispatch::IntegrationTest
     assert_not user.saved_noshis.last.rendered_image.attached?
   end
 
+  test "paid user save attaches a small rendered image" do
+    user = paid_user
+    sign_in_as(user)
+
+    post saved_noshis_path, params: {
+      settings: { omotegaki: "御祝" },
+      rendered_image: "data:image/jpeg;base64,#{Base64.strict_encode64("fakejpeg")}"
+    }, as: :json
+    assert_response :created
+
+    assert user.saved_noshis.last.rendered_image.attached?
+  end
+
+  test "paid user save drops an oversized rendered image but keeps the settings" do
+    user = paid_user
+    sign_in_as(user)
+
+    assert_difference -> { user.saved_noshis.count }, 1 do
+      post saved_noshis_path, params: {
+        settings: { omotegaki: "御祝" },
+        rendered_image: "data:image/jpeg;base64,#{"A" * 8.megabytes}"
+      }, as: :json
+    end
+    assert_response :created
+
+    assert_not user.saved_noshis.last.rendered_image.attached?
+  end
+
   test "user can delete their saved noshi" do
     user = create_user
     saved = user.saved_noshis.create!(title: "X", settings: {})
@@ -66,8 +94,7 @@ class SavedNoshisControllerTest < ActionDispatch::IntegrationTest
     assert_match I18n.t("saved_noshi.missing_background"), @response.body
   end
 
-  test "cannot open another user's saved noshi in the editor" do
-    owner = create_user
+  test "cannot open another user's saved noshi in the editor" do    owner = create_user
     other = create_user
     saved = owner.saved_noshis.create!(title: "Private", settings: { omotegaki: "御祝" })
 
@@ -76,5 +103,17 @@ class SavedNoshisControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     # Settings JSON is only injected for the owner.
     assert_no_match "saved_noshi_settings", @response.body
+  end
+
+  private
+
+  def paid_user
+    create_user.tap do |user|
+      user.create_subscription!(
+        status: "active",
+        current_period_end: 1.day.from_now,
+        stripe_subscription_id: "sub-#{SecureRandom.hex(4)}"
+      )
+    end
   end
 end
