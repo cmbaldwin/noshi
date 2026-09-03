@@ -4,7 +4,7 @@ module Api
     # newest-first (default is top-rated).
     class BackgroundsController < BaseController
       def index
-        scope = Background.approved.with_attached_image
+        scope = Background.approved.with_attached_image.includes(:user)
         scope = params[:sort] == "new" ? scope.newest : scope.top_rated
         backgrounds = scope.to_a
 

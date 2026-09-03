@@ -3,7 +3,7 @@ module Admin
     before_action :require_admin
 
     def index
-      @backgrounds = Background.pending.with_attached_image.newest
+      @backgrounds = Background.pending.with_attached_image.includes(:user).newest
     end
 
     # Approve or reject a pending upload.

@@ -37,8 +37,7 @@ class Api::V1::ApiTest < ActionDispatch::IntegrationTest
     assert_equal "Community", json["community"].first["title"]
   end
 
-  test "backgrounds endpoint lists only approved uploads" do
-    user = User.create!(provider: "google_oauth2", uid: "api2", email: "api2@x.com")
+  test "backgrounds endpoint lists only approved uploads" do    user = User.create!(provider: "google_oauth2", uid: "api2", email: "api2@x.com")
     %w[approved pending].each do |status|
       bg = user.backgrounds.build(title: "BG-#{status}", orientation: "landscape", status: status)
       bg.image.attach(io: File.open(Rails.root.join("test/fixtures/files/sample.png")),
@@ -133,5 +132,29 @@ class Api::V1::ApiTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert json.dig("endpoints", "openapi").present?, "openapi key missing from service manifest"
     assert_includes json.dig("endpoints", "openapi"), "openapi.json"
+  end
+
+  test "backgrounds endpoint preloads uploaders instead of N+1 queries" do
+    3.times do |i|
+      owner = User.create!(provider: "google_oauth2", uid: "n1-#{i}", email: "n1-#{i}@x.com")
+      bg = owner.backgrounds.build(title: "N1-#{i}", orientation: "landscape", status: "approved")
+      bg.image.attach(io: File.open(Rails.root.join("test/fixtures/files/sample.png")),
+                      filename: "sample.png", content_type: "image/png")
+      bg.save!
+    end
+
+    user_loads = []
+    sub = ActiveSupport::Notifications.subscribe("sql.active_record") do |*, payload|
+      user_loads << payload[:sql] if !payload[:cached] && payload[:sql].match?(/FROM "users"/)
+    end
+    begin
+      get "/api/v1/backgrounds"
+    ensure
+      ActiveSupport::Notifications.unsubscribe(sub)
+    end
+
+    assert_response :success
+    assert_equal 3, json["count"]
+    assert_equal 1, user_loads.size, "expected one preloaded users query, got #{user_loads.size}"
   end
 end
