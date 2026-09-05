@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/cmbaldwin/Uchujin.git
+  revision: 3dac08ac55200fa3fe67a4f2d1754388c9c9f2eb
+  tag: v0.2.0
+  specs:
+    uchujin (0.2.0)
+      rails (>= 7.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -422,6 +430,7 @@ DEPENDENCIES
   thruster
   turbo-rails
   tzinfo-data
+  uchujin!
   web-console
 
 CHECKSUMS
@@ -568,6 +577,7 @@ CHECKSUMS
   tsort (0.2.0) sha256=9650a793f6859a43b6641671278f79cfead60ac714148aabe4e3f0060480089f
   turbo-rails (2.0.23) sha256=ee0d90733aafff056cf51ff11e803d65e43cae258cc55f6492020ec1f9f9315f
   tzinfo (2.0.6) sha256=8daf828cc77bcf7d63b0e3bdb6caa47e2272dcfaf4fbfe46f8c3a9df087a829b
+  uchujin (0.2.0)
   uri (1.1.1) sha256=379fa58d27ffb1387eaada68c749d1426738bd0f654d812fcc07e7568f5c57c6
   useragent (0.16.11) sha256=700e6413ad4bb954bb63547fa098dddf7b0ebe75b40cc6f93b8d54255b173844
   version_gem (1.1.15) sha256=a73241587b29252e3567e0c818ded80730eb754d43b508f6ce4db22ca9ba27d0
