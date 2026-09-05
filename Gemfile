@@ -23,6 +23,9 @@ gem "omniauth-rails_csrf_protection"
 # Billing for the paid image-storage tier
 gem "stripe"
 
+# Production monitoring: in-process error tracker (own DB + /uchujin UI + email alerts). See github.com/cmbaldwin/Uchujin.
+gem "uchujin", github: "cmbaldwin/Uchujin", tag: "v0.2.0"
+
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "bootsnap", require: false
 gem "thruster", require: false

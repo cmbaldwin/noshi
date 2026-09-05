@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount Uchujin::Engine => "/uchujin"
   # Auth lives outside the /:locale scope so the OAuth callback URL is stable.
   get  "auth/:provider/callback", to: "sessions#create"
   get  "auth/failure",            to: "sessions#failure"
