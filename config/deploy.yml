@@ -49,6 +49,10 @@ env:
   - STRIPE_WEBHOOK_SECRET
   - STRIPE_MONTHLY_PRICE_ID
   - STRIPE_YEARLY_PRICE_ID
+  # Uchujin (in-process error tracker at /uchujin). Tokens live in
+  # 1Password and are exported into .kamal/secrets (gitignored) — never commit values.
+  - UCHUJIN_DEPLOY_TOKEN
+  - UCHUJIN_MCP_TOKEN
   clear:
     # config/puma.rb defaults to 4 workers; the shared host has 2 cores.
     WEB_CONCURRENCY: 1
