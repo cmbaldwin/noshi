@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Noshi",
+  "name_for_model": "noshi",
+  "description_for_human": "Noshi — generate Japanese gift envelope bands.",
+  "description_for_model": "Noshi (https://noshi.moab.jp) is a free bilingual tool for generating noshi (gift envelope bands). Machine overview at https://noshi.moab.jp/llms.txt, open sitemap at https://noshi.moab.jp/sitemap.xml, and a read-only JSON API at https://noshi.moab.jp/api/v1 (OpenAPI at /api/v1/openapi.json). The generator itself runs fully in the browser.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://noshi.moab.jp/api/v1/openapi.json",
+    "has_user_authentication": false
+  },
+  "logo_url": "https://noshi.moab.jp/apple-touch-icon.png",
+  "contact_email": "cody@moab.jp",
+  "legal_info_url": "https://noshi.moab.jp/terms"
+}
