@@ -14,7 +14,7 @@
   "keywords": ["mcp", "noshi", "japanese", "gift", "ai-agent"],
   "license": "MIT",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0"
+    "@modelcontextprotocol/sdk": "^1.31.0"
   },
   "engines": {
     "node": ">=18.0.0"
