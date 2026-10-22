@@ -5,6 +5,12 @@ module Api
     class BaseController < ActionController::API
       before_action :set_cors_headers
 
+      # CORS preflight for browser clients. The before_action already set the
+      # Access-Control headers, so an empty 204 is the whole answer.
+      def preflight
+        head :no_content
+      end
+
       private
 
       def set_cors_headers
