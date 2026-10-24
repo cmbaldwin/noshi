@@ -7,7 +7,7 @@
 #   docker build -t noshi .
 #   docker run -d -p 80:80 -e RAILS_MASTER_KEY=$(cat config/master.key) --name noshi noshi
 
-ARG RUBY_VERSION=4.0.6
+ARG RUBY_VERSION=4.0.9
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
 WORKDIR /rails
