@@ -24,7 +24,7 @@ gem "omniauth-rails_csrf_protection"
 gem "stripe"
 
 # Production monitoring: in-process error tracker (own DB + /uchujin UI + email alerts). See github.com/cmbaldwin/Uchujin.
-gem "uchujin", github: "cmbaldwin/Uchujin", tag: "v0.2.0"
+gem "uchujin", github: "cmbaldwin/Uchujin", tag: "v0.2.2"
 
 gem "markdown_for_agents", github: "cmbaldwin/markdown_for_agents", tag: "v0.1.1"
 
