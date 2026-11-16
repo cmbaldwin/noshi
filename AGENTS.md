@@ -35,8 +35,8 @@ in the browser. On top of that there is now an optional accounts layer:
 | Frontend | Importmap + Stimulus + Turbo + Tailwind v2 (no Node/Webpack) |
 | Assets | Propshaft (not Sprockets) |
 | Server | Puma + Thruster (static asset serving/compression in prod) |
-| Deployment | Kamal 2, Docker, AWS ECR (`moab/noshi`) |
-| Hosting | Shared moab server (`5.223.51.74`), proxied by kamal-proxy |
+| Deployment | Kamal 2, Docker, private registry `escalante.tailabd61f.ts.net:5555` (`moab/noshi`, Tailscale-only, HTTP) |
+| Hosting | Shared moab server (`5.223.44.132`, `ssh moab`), proxied by kamal-proxy |
 | Domain | `noshi.moab.jp`, Cloudflare proxied, CF origin cert for TLS |
 | CI/CD | None — `kamal deploy` from local machine |
 
@@ -153,7 +153,7 @@ Noshi background images are in `app/assets/images/noshi/` (full-size) and `app/a
 | `SECRET_KEY_BASE` | 1Password `MOAB/Production` vault | Any 128-char hex string |
 | `CLOUDFLARE_SSL_CERT_PEM` | `config/ssl/cert.pem` (local file) | CF origin cert, valid until 2040 |
 | `CLOUDFLARE_SSL_KEY_PEM` | `config/ssl/key.pem` (local file) | Paired private key |
-| `AWS_ECR_PASSWORD` | `aws ecr get-login-password` | Auto-fetched, 12h TTL |
+| `KAMAL_REGISTRY_PASSWORD` | 1Password | Escalante registry login (`username: kamal`) |
 
 Gitignored paths: `/.kamal/secrets`, `/config/ssl/*.pem`, `/config/master.key`
 
@@ -170,7 +170,7 @@ Run from `/Users/cody/Dev/noshi`. Requires:
 
 ### `config/deploy.yml` notes
 
-- Server IP and ECR registry URL are hardcoded (not secrets — public infrastructure)
+- Server IP and registry URL are hardcoded (not secrets — public infrastructure)
 - SSL pems use ERB: `<%= ENV['CLOUDFLARE_SSL_CERT_PEM'] %>` — value comes from `.kamal/secrets`
 - `SECRET_KEY_BASE` is in `env.secret` list — Kamal reads it directly from the secrets env
 
