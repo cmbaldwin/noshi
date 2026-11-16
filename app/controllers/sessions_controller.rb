@@ -1,8 +1,9 @@
 class SessionsController < ApplicationController
-  # The OAuth callback is a GET redirect from Google with no CSRF token; the
-  # request phase that starts the flow is CSRF-protected by
-  # omniauth-rails_csrf_protection instead.
-  skip_before_action :verify_authenticity_token, raise: false
+  # Only the OAuth callback is exempt: it is a GET redirect from Google with
+  # no CSRF token. Everything else here (notably logout) keeps the default
+  # forgery protection. The request phase that starts the flow is
+  # CSRF-protected by omniauth-rails_csrf_protection instead.
+  skip_before_action :verify_authenticity_token, only: :create, raise: false
 
   def create
     auth = request.env["omniauth.auth"]

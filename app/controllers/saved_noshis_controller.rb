@@ -42,15 +42,26 @@ class SavedNoshisController < ApplicationController
     "#{t('saved_noshi.untitled')} #{Time.current.strftime('%Y-%m-%d %H:%M')}"
   end
 
+  # Hard cap on the client-rendered image we persist for paid users, so a
+  # malicious client can't exhaust memory or disk with a giant data URL.
+  MAX_RENDERED_IMAGE_BYTES = 5.megabytes
+
   # Decode a "data:image/jpeg;base64,..." URL produced by the client and attach
-  # it. Silently no-ops on anything that isn't a base64 image data URL.
+  # it. Silently no-ops on anything that isn't a base64 image data URL, or
+  # that decodes to more than MAX_RENDERED_IMAGE_BYTES.
   def attach_rendered_image(saved)
     data = params[:rendered_image].to_s
     match = data.match(%r{\Adata:(image/\w+);base64,(.+)\z}m)
     return unless match
+    # Base64 inflates payloads ~4/3 — reject the obviously oversized ones
+    # before paying to decode them.
+    return if match[2].bytesize > MAX_RENDERED_IMAGE_BYTES * 4 / 3 + 1024
+
+    decoded = Base64.decode64(match[2])
+    return if decoded.bytesize > MAX_RENDERED_IMAGE_BYTES
 
     saved.rendered_image.attach(
-      io: StringIO.new(Base64.decode64(match[2])),
+      io: StringIO.new(decoded),
       filename: "noshi-#{Time.current.to_i}.jpg",
       content_type: match[1]
     )
