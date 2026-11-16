@@ -35,6 +35,10 @@ class ApplicationController < ActionController::Base
   def require_admin
     return if current_user&.admin?
 
-    redirect_to root_path, alert: t("auth.login_required")
+    # Signed-in non-admins get the admin-only message; guests get the sign-in
+    # prompt. (Previously both saw "please sign in", which is wrong when the
+    # user already is.)
+    alert = user_signed_in? ? t("auth.admin_required") : t("auth.login_required")
+    redirect_to root_path, alert: alert
   end
 end
